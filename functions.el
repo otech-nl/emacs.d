@@ -7,7 +7,8 @@
     )
   )
 
-;; (defun auto-complete-mode-maybe ()
-;;   "No maybe for you. Only AC!"
-;;   (unless (minibufferp (current-buffer))
-;;     (auto-complete-mode 1)))
+(defun text-mode-settings ()
+  "custom settings for text-based modes"
+  (turn-on-visual-line-mode)
+  (setq-local whitespace-line-column 999)
+  )
