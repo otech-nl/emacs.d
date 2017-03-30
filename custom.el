@@ -12,20 +12,24 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(backup-by-copying t)
+ '(backup-directory-alist (quote (("." . "/tmp/emacs-backups"))))
+ '(delete-old-versions t)
+ '(global-linum-mode t)
+ '(kept-new-versions 6)
+ '(kept-old-versions 2)
+ '(menu-bar-mode 1)
  '(package-selected-packages
    (quote
     (company-jedi jinja2-mode jedi web-mode geiser company-anaconda anaconda-mode json-mode js2-mode rainbow-mode elisp-slime-nav rainbow-delimiters company zop-to-char zenburn-theme which-key volatile-highlights undo-tree smartrep smartparens smart-mode-line operate-on-number move-text magit projectile ov imenu-anywhere guru-mode grizzl god-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region epl editorconfig easy-kill diminish diff-hl discover-my-major dash crux browse-kill-ring beacon anzu ace-window)))
- ;; '(prelude-guru nil)  ;; guru is annoying
- ;; '(prelude-use-smooth-scrolling t)
- '(menu-bar-mode 1)  ;; I like a menu bar, thank you
- '(whitespace-line-column 100)  ;; 80 is a bit short...
- '(global-linum-mode t)
- '(whitespace-line-column 999)  ;; 80 is a bit short...
  '(prelude-auto-save nil)
- '(backup-by-copying t)      ;; don't clobber symlinks
- '(backup-directory-alist '(("." . "/tmp/emacs-backups")))    ;; don't litter my fs tree
- '(delete-old-versions t)
- '(kept-new-versions 6)
- '(kept-old-versions 2)
+ '(prelude-guru nil)
+ '(realgud-safe-mode nil)
  '(version-control t)
+ '(whitespace-line-column 999))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
