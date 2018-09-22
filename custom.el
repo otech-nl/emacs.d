@@ -21,11 +21,14 @@
  '(menu-bar-mode 1)
  '(package-selected-packages
    (quote
-    (yaml-mode feature-mode neotree tide lua-mode markdown-mode auto-virtualenvwrapper realgud csv-mode php+-mode company-jedi jinja2-mode jedi web-mode geiser company-anaconda anaconda-mode json-mode js2-mode rainbow-mode elisp-slime-nav rainbow-delimiters company zop-to-char zenburn-theme which-key volatile-highlights undo-tree smartrep smartparens smart-mode-line operate-on-number move-text magit projectile ov imenu-anywhere guru-mode grizzl god-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region epl editorconfig easy-kill diminish diff-hl discover-my-major dash crux browse-kill-ring beacon anzu ace-window)))
+    (helm-ag helm-descbinds helm-projectile helm counsel swiper ivy rjsx-mode jsx-mode prettier-js o-blog yaml-mode feature-mode neotree tide lua-mode markdown-mode auto-virtualenvwrapper realgud csv-mode php+-mode company-jedi jinja2-mode jedi web-mode geiser company-anaconda anaconda-mode json-mode js2-mode rainbow-mode elisp-slime-nav rainbow-delimiters company zop-to-char zenburn-theme which-key volatile-highlights undo-tree smartrep smartparens smart-mode-line operate-on-number move-text magit projectile ov imenu-anywhere guru-mode grizzl god-mode gitignore-mode gitconfig-mode git-timemachine gist flycheck expand-region epl editorconfig easy-kill diminish diff-hl discover-my-major dash crux browse-kill-ring beacon anzu ace-window)))
  '(prelude-auto-save nil)
  '(prelude-guru nil)
  '(realgud-safe-mode nil)
  '(version-control t)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-markup-indent-offset 2)
  '(whitespace-line-column 999))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

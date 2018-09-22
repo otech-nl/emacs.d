@@ -1,5 +1,6 @@
-(if (eq system-type 'windows-nt)
-    ;; then
-    (add-to-list 'exec-path "C:/Program Files/Git/bin/")
-    ;; else
-    )
+(cond ((eq system-type 'windows-nt)
+       (add-to-list 'exec-path "C:/Program Files/Git/bin/")
+       (setq ispell-program-name "c:/ProgramData/chocolatey/bin/hunspell")
+       ;; (setq ispell-dictionary "british")
+       (setq ispell-dictionary "american")
+       ))

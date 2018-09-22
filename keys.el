@@ -3,3 +3,4 @@
 (global-set-key (kbd "C-x k") 'kill-this-buffer)  ;; override
 (global-set-key (kbd "C-c l") 'list-packages)
 (global-set-key (kbd "C-c \\") 'prelude-copy-file-name-to-clipboard)
+(define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
