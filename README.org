@@ -1,9 +1,1 @@
-#+TITLE: My Emacs Prelude personal directory
-
-* Initial thoughts
-
-After maintaining a custom Emacs [[https://gist.github.com/otech-nl/a31925696c96b8314d284b23626e1979][init.el]] for a while, I decided to give [[https://github.com/bbatsov/prelude][Prelude]] a go.
-
-After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.
-
-So, here it is. I'll be working with this for a while.
+#+TITLE: My Emacs configuration
