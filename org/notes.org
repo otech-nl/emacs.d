@@ -1,0 +1,33 @@
+* NEXT Administratie
+[2018-10-25 do 15:09]
+
+Eén keer per kwartaal moet de boekhouding van zowel de werkmaatschappij als de holding van OTech (resp. OTW en OTH) worden bijgwerkt en opgestuurd t.b.v. de BTW-aangifte. Hiervoor lever ik een zip met aan boekhouder Jimmy Kruize:
+
+  1. Managament-fee facturen voor drie maanden (2x: van OTH naar OTW)
+  2. Alle digitale rekeningen opslaan:
+     - Pauw (inscannen van papier)
+     - Kruize (email / OTW + OTH)
+  3. Alle declaraties verzamelen (in twee bestanden):
+     - uitgaven
+       - yourhosting (downloaden uit Hosting Manager)
+       - github (email / via Paypal)
+       - media
+     - kilometers (uit uren-registratie, na controle van afspraken)
+  4. Controleer salarisbestanden: 3 elk van salarisstrook, journaal en belanstingaangifte
+  5. BTW-aangigften vorige kwartaal
+  6. Bankafschriften downloaden (2x betaalrekening, 1x spaarrekening)
+  7. Facturen OTW verwerken in factuuroverzicht
+  8. Verzenden kwartaalfolder:
+     1. Alle submappen controleren
+     2. Kopiëren naar "Verwerkt"
+     3. Alleen PDFs
+     4. Zippen
+     5. Versturen
+     6. Verwijderen (zip bewaren)
+  9. Papieren post toevoegen aan A4-envelop voor dit jaar.
+
+  SCHEDULED: <2018-10-20 do .+1m>
+:PROPERTIES:
+:STYLE: habit
+:REPEAT_TO_STATE: NEXT
+:END:
