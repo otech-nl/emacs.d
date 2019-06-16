@@ -1,1 +1,20 @@
 #+TITLE: My Emacs configuration
+
+I tend to bounce between Emacs and other editors (UltraEdit, Sublime, VS Code, ...). 
+When I am using Emacs I tend to grow my config until it feels too big. An then I start over.
+
+So, here it is. I’ll be working with this for a while.
+
+* 2019
+
+Trying to go back to (mostly) vanilla Emacs, with minimal config.
+
+* 2018
+
+Back to a custom config, using [[https://github.com/jwiegley/use-package][use-package]].
+
+* 2017: Prelude
+
+I decided to give Prelude a go. This is the contents of my ~personal~ directory.
+
+After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.
