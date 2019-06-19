@@ -11,7 +11,7 @@
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
-(setq use-package-always-defer t)
+(setq use-package-always-defer nil)
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t)
@@ -20,19 +20,23 @@
 
 ;; actual packages
 
-(use-package draft-mode)
+(use-package company
+  :defer t)
+
+(use-package draft-mode
+  :defer t)
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
-(use-package guru-mode
-  :config
-  (guru-global-mode +1))
+(use-package gherkin-mode
+  :defer t)
 
 (use-package magit
   :bind (("C-x g" . magit-status)))  ;; default key binding fails...
 
 (use-package markdown-mode
+  :defer t
   :mode (("\\.text\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode))
@@ -40,14 +44,12 @@
 
 (use-package org
   ;; :ensure org-plus-contrib
+  :ensure htmlize
   :init
-  (add-hook 'org-mode-hook 'visual-line-mode)
+  ;; (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'org-indent-mode)
   ;; (add-hook 'org-mode-hook 'flyspell-mode)
   ;; (setq org-mobile-directory (expand-file-name "org" steets:drive-root))
-  :diminish visual-line-mode
-  :diminish org-indent-mode
-  :defer t
   :bind (("\C-c l" . org-store-link)
          ("\C-c a" . org-agenda)
          ("\C-c c" . org-capture)
@@ -55,14 +57,22 @@
          ;; ((kbd "C-c b") 'org-switchb)
          ))
 
-;; (use-package powerline
-;;   :init
-;;   (powerline-default-theme))
+(use-package projectile
+  :pin melpa
+  :config
+  (projectile-global-mode +1)
+  (setq projectile-enable-caching t)
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
 
 (use-package telephone-line
   :init
   (telephone-line-mode 1))
 
+(use-package web-mode
+  :mode ("\\.html$" "\\.jinja2$" "\\.mustache$" "\\.djhtml$" ))
+
 (use-package writeroom-mode
+  :defer t
   :config
   (setq writeroom-width 120))

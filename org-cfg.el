@@ -12,3 +12,33 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :REPEAT_TO_STATE: NEXT
 :END:
 ")))
+
+
+(setq org-publish-project-alist
+      '(("notes-draft"
+         :base-directory "~/src/notes/"
+         :publishing-directory "~/src/notes/html"
+         :publishing-function org-html-publish-to-html
+         )
+
+        ;; ("images"
+        ;;  :base-directory "~/images/"
+        ;;  :base-extension "jpg\\|gif\\|png"
+        ;;  :publishing-directory "/ssh:user@host:~/html/images/"
+        ;;  :publishing-function org-publish-attachment)
+
+        ;; ("other"
+        ;;  :base-directory "~/other/"
+        ;;  :base-extension "css\\|el"
+        ;;  :publishing-directory "/ssh:user@host:~/html/other/"
+        ;;  :publishing-function org-publish-attachment)
+
+        ;; ("website" :components ("orgfiles" "images" "other"))
+        ))
+
+;; derive notes from notes-draft
+(add-to-list 'org-publish-project-alist
+             (cons "notes"
+              (plist-put
+               (cdr (copy-alist (assoc "notes-draft" org-publish-project-alist)))
+               :publishing-directory "/sftp:vps.otech.nl:~/notes/")))

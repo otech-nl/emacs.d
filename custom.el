@@ -49,7 +49,7 @@
      ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (spaceline-config telephone-line spaceline guru-mode writeroom-mode write-room draft-mode gherkin-mode company markdown-mode auto-package-update use-package magit)))
+    (htmlize web-mode projectile expand-region spaceline-config telephone-line spaceline writeroom-mode draft-mode gherkin-mode company markdown-mode auto-package-update use-package magit)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)

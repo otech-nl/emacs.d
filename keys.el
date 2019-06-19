@@ -15,10 +15,17 @@
                   (find-file (read-file-name "Find file: " org-directory))))
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
+(global-set-key (kbd "C-c l") (lambda () (interactive) (find-file "~/Dropbox/org/refile.org")))
 (global-set-key (kbd "C-c n") (lambda () (interactive) (find-file "~/src/notes/")))
 (global-set-key (kbd "C-c p") 'package-list-packages)
-(global-set-key (kbd "C-c r") (lambda () (interactive) (find-file "~/Dropbox/org/refile.org")))
+(global-set-key (kbd "C-c C-p") 'org-publish)
 (global-set-key (kbd "C-c s") 'sort-lines)
+(global-set-key (kbd "C-c u")  ;; dos2unix
+                (lambda() (interactive)
+                  (revert-buffer-with-coding-system 'unix t)
+                  (save-excursion
+                    (goto-char (point-min))
+                    (while (search-forward "" nil t) (replace-match "")))))
 (global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/Dropbox/org/work.org")))
 (global-set-key (kbd "C-c <up>")  ; move line up
                 (lambda () (interactive)
