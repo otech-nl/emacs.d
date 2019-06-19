@@ -4,9 +4,6 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
-
 ;; bootstrap use-package (https://github.com/jwiegley/use-package)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -21,7 +18,7 @@
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-;; the actual packages
+;; actual packages
 
 (use-package draft-mode)
 
@@ -30,7 +27,7 @@
 
 (use-package guru-mode
   :config
-    (guru-global-mode +1))
+  (guru-global-mode +1))
 
 (use-package magit
   :bind (("C-x g" . magit-status)))  ;; default key binding fails...
@@ -58,7 +55,13 @@
          ;; ((kbd "C-c b") 'org-switchb)
          ))
 
-(use-package spaceline)
+;; (use-package powerline
+;;   :init
+;;   (powerline-default-theme))
+
+(use-package telephone-line
+  :init
+  (telephone-line-mode 1))
 
 (use-package writeroom-mode
   :config

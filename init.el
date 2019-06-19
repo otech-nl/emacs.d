@@ -1,5 +1,3 @@
-;; .emacs.d/init.el
-
 ;; handle config files
 (let ((config-files
        (mapcar
@@ -8,11 +6,14 @@
   ;; keep custom file separate
   (setq custom-file (car config-files))
   ;; load config files
-  (dolist (f config-files)(load f)))
+  (dolist (f config-files)
+    (progn
+      (message "Loading %s" f)
+      (load f))))
 
 ;;; odd & ends
 
-(cua-mode t)
+;; (cua-mode t)
 
 (display-time)
 

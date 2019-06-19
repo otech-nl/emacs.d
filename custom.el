@@ -43,9 +43,13 @@
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "WIP(p)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))))
+ '(package-archives
+   (quote
+    (("gnu" . "https://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (spaceline guru-mode writeroom-mode write-room draft-mode gherkin-mode company markdown-mode auto-package-update use-package magit)))
+    (spaceline-config telephone-line spaceline guru-mode writeroom-mode write-room draft-mode gherkin-mode company markdown-mode auto-package-update use-package magit)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
