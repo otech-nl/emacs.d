@@ -23,6 +23,9 @@
 (use-package company
   :defer t)
 
+(use-package deft
+  :defer t)
+
 (use-package draft-mode
   :defer t)
 
@@ -46,16 +49,18 @@
   ;; :ensure org-plus-contrib
   :ensure htmlize
   :init
-  ;; (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'org-indent-mode)
-  ;; (add-hook 'org-mode-hook 'flyspell-mode)
+  (org-clock-persistence-insinuate)
   ;; (setq org-mobile-directory (expand-file-name "org" steets:drive-root))
   :bind (("\C-c l" . org-store-link)
          ("\C-c a" . org-agenda)
          ("\C-c c" . org-capture)
          ("\C-c t" . (lambda () (interactive) (org-todo-list 1) (delete-other-windows)))
-         ;; ((kbd "C-c b") 'org-switchb)
+         ;; ("\C-c b" . org-switchb)
          ))
+
+(use-package outshine
+  :defer t)
 
 (use-package projectile
   :pin melpa
@@ -71,6 +76,9 @@
 
 (use-package web-mode
   :mode ("\\.html$" "\\.jinja2$" "\\.mustache$" "\\.djhtml$" ))
+
+(use-package winner
+  :defer t)
 
 (use-package writeroom-mode
   :defer t

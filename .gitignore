@@ -1,8 +1,12 @@
-.org-id-locations
 *~
+.last-package-update-day
+.org-id-locations
 ac-comphist.dat
+bookmarks
 elpa
 history
-places
+org-clock-save.el
 org2web
-bookmarks
+places
+tramp
+transient/

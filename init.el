@@ -10,6 +10,7 @@
     (progn
       (message "Loading %s" f)
       (load f))))
+(load "~/src/blog/publish.el")
 
 ;;; odd & ends
 
