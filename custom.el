@@ -1,3 +1,10 @@
+;;; package --- customizations
+
+;;; Commentary:
+;; anything you can customize
+
+;;; Code:
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -11,7 +18,7 @@
    (quote
     ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(default-directory "~/src" t)
- '(deft-directory "~/src/notes")
+ '(deft-directory "~/src/blog")
  '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
  '(deft-recursive t)
  '(delete-selection-mode t)
@@ -44,6 +51,7 @@
  '(org-hide-leading-stars t)
  '(org-log-into-drawer t)
  '(org-pretty-entities t)
+ '(org-publish-project-alist nil)
  '(org-refile-targets
    (quote
     (("archive.org" :maxlevel . 1)
@@ -55,17 +63,20 @@
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "WIP(p)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))))
+ '(package-archive-priorities (quote (("ELPA" . 10) ("MELPA-stable" . 5) ("MELPA" . 0))))
  '(package-archives
    (quote
-    (("gnu" . "https://elpa.gnu.org/packages/")
-     ("melpa" . "https://melpa.org/packages/"))))
+    (("ELPA" . "https://elpa.gnu.org/packages/")
+     ("MELPA-stable" . "https://stable.melpa.org/packages/")
+     ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (writeroom-mode web-mode use-package telephone-line smart-mode-line projectile outshine markdown-mode magit htmlize gherkin-mode expand-region draft-mode deft company blog-admin auto-package-update)))
+    (yaml-mode yml-mope yaml-mope olivetti typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
  '(savehist-mode t)
+ '(setq projectile-project-search-path)
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tab-always-indent (quote complete))
@@ -78,3 +89,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(provide 'custom)
+;;; custom.el ends here
