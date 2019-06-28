@@ -17,8 +17,8 @@
  '(custom-safe-themes
    (quote
     ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
- '(default-directory "~/src" t)
- '(deft-directory "~/src/blog")
+ '(default-directory "~/src/" t)
+ '(deft-directory "~/src/blog/")
  '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
  '(deft-recursive t)
  '(delete-selection-mode t)
