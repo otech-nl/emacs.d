@@ -27,6 +27,8 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(require 'dired-x)
+
 (setq completion-ignored-extensions
       (append completion-ignored-extensions
               '("-lock.json")))

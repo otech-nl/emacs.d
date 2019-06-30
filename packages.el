@@ -19,6 +19,7 @@
   (require 'use-package))
 (setq use-package-always-ensure t)
 (setq use-package-always-defer nil)
+
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t)
@@ -27,20 +28,30 @@
 
 ;; actual packages
 
+(use-package anaconda-mode  ;; includes pipenv
+  :defer t
+  :hook python-mode
+  :hook (python-mode . eldoc-mode))
+
 (use-package autoinsert
   :config
   (setq auto-insert-query nil)
   (auto-insert-mode 1)
   (add-hook 'find-file-hook 'auto-insert)
-  (setq auto-insert-alist nil) ;; remove this like to restore defaults
+  (setq auto-insert-alist nil) ;; remove this to restore defaults
   (define-auto-insert '(org-mode . "org-mode file")
     '("org-mode header"
       "#+TITLE: " (file-name-base (buffer-file-name)) \n
       "#+DATE: " (format-time-string "%Y-%m-%d") \n
       \n
- )))
+      )))
+
+(use-package blacken  ;; also: pip install black
+  :defer t
+  :hook python-mode)
 
 (use-package captain
+  :defer t
   :config
   (add-hook
    'org-mode-hook
@@ -56,15 +67,6 @@
 
 (use-package draft-mode
   :defer t)
-
-(use-package dumb-jump
-  :ensure
-  :config (setq dumb-jump-selector 'ivy)
-  :bind (("M-C-o" . dumb-jump-go-other-window)
-         ("M-C-j" . dumb-jump-go)
-         ("M-C-i" . dumb-jump-go-prompt)
-         ("M-C-x" . dumb-jump-go-prefer-external)
-         ("M-C-z" . dumb-jump-go-prefer-external-other-window)))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -84,24 +86,7 @@
 (use-package gherkin-mode
   :defer t)
 
-(use-package ivy
-  :ensure t
-  :diminish (ivy-mode . "")
-  :bind
-  (:map ivy-mode-map ("C-'" . ivy-avy))
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  (setq ivy-height 10)  ;; number of result lines to display
-  (setq ivy-count-format "")  ;; does not count candidates
-  (setq ivy-initial-inputs-alist nil)  ;; no regexp by default
-  (setq ivy-re-builders-alist  ;; configure regexp engine.
-        '((t . ivy--regex-ignore-order)))) ;; allow input not in order
-
-(use-package jinja2-mode)
-
-(use-package magit
-  :bind (("C-x g" . magit-status)))  ;; default key binding fails...
+(use-package magit)
 
 (use-package markdown-mode
   :defer t
@@ -110,12 +95,10 @@
          ("\\.md\\'" . markdown-mode)))
 
 (use-package org
-  ;; :ensure org-plus-contrib
   :ensure htmlize
   :config
   (add-hook 'org-mode-hook 'org-indent-mode)
   (org-clock-persistence-insinuate)
-  ;; (setq org-mobile-directory (expand-file-name "org" steets:drive-root))
   :bind (("\C-c l" . org-store-link)
          ("\C-c a" . org-agenda)
          ("\C-c c" . org-capture)
@@ -123,21 +106,26 @@
          ;; ("\C-c b" . org-switchb)
          ))
 
-(use-package outshine
-  :defer t)
+(use-package prettier-js  ;; also: npm i --global prettier
+  :hook js2-mode)
 
 (use-package projectile
   :pin MELPA
   :config
   (projectile-global-mode +1)
   (setq projectile-enable-caching t)
-  (setq projectile-completion-system 'ivy)
   :bind-keymap
   ("M-p" . projectile-command-map)
   )
 
-(use-package pipenv
-  :hook (python-mode . pipenv-mode))
+(use-package rainbow-mode
+  :ensure
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-mode))
+
+(use-package rjsx-mode
+  :mode ("\\.js\\'" "\\.jsx\\'")
+  :config (setq js-indent-level 2))
 
 (use-package smooth-scrolling
   :config
@@ -148,23 +136,32 @@
   (telephone-line-mode 1))
 
 (use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode)))
+  :mode ("\\.ts\\'" "\\.tsx\\'"))
 
 (use-package web-mode
-  :mode ("\\.html$" "\\.js$" "\\.jsx$" "\\.jinja2$" "\\.mustache$" "\\.djhtml$" ))
+  :mode ("\\.html$" "\\.jinja2$" "\\.mustache$" "\\.djhtml$" ))
 
 (use-package which-key
   :config (which-key-mode))
 
-(use-package winner
-  :config (winner-mode 1)
-  :defer t)
+(use-package whole-line-or-region
+  :ensure t
+  :diminish whole-line-or-region-mode
+  :config
+  (whole-line-or-region-mode 1))
 
 (use-package writeroom-mode
   :defer t
   :config
   (setq writeroom-width 120))
+
+(use-package ws-butler  ;; clean up whitespace
+  :ensure t
+  :diminish ws-butler-mode
+  :config
+  (add-hook 'prog-mode-hook 'ws-butler-mode)
+  (add-hook 'jinja2-mode-hook 'ws-butler-mode)
+  (add-hook 'yaml-mode-hook 'ws-butler-mode))
 
 (use-package yaml-mode)
 

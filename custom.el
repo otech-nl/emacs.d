@@ -21,6 +21,7 @@
  '(deft-directory "~/src/blog/")
  '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
  '(deft-recursive t)
+ '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
  '(display-time-24hr-format t)
  '(electric-pair-mode t)
@@ -33,6 +34,7 @@
      (delete-other-windows)
      (get-buffer "*Org Agenda*")))
  '(kill-whole-line t)
+ '(load-prefer-newer t)
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(org-agenda-files
    (quote
@@ -71,18 +73,19 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (yaml-mode yml-mope yaml-mope olivetti typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
+    (rainbow-mode ws-butler whole-line-or-region counsel discover blacken anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
+ '(projectile-project-search-path "~/src/")
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
  '(savehist-mode t)
- '(setq projectile-project-search-path)
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tab-always-indent (quote complete))
  '(tool-bar-mode nil)
  '(user-full-name "René Steetskamp")
- '(user-mail-address "rene@steets.nl"))
+ '(user-mail-address "rene@steets.nl")
+ '(visible-bell t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

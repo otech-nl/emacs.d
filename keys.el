@@ -56,8 +56,9 @@
 (global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/Dropbox/org/work.org")))
 
 ;; overrides
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "M-/") 'hippie-expand)
 
 (provide 'keys)
 ;;; keys.el ends here
