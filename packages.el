@@ -46,10 +46,6 @@
       \n
       )))
 
-(use-package blacken  ;; also: pip install black
-  :defer t
-  :hook python-mode)
-
 (use-package captain
   :defer t
   :config
@@ -71,6 +67,11 @@
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
+(use-package format-all
+  :hook (prog-mode . format-all-mode))
+;; also: pip install black
+;; also: npm i --global prettier
+
 (use-package flycheck
   :config
   (add-hook 'prog-mode-hook #'flycheck-mode))
@@ -86,7 +87,20 @@
 (use-package gherkin-mode
   :defer t)
 
-(use-package magit)
+;; not stable yet
+;; (use-package lsp-mode
+;;   :hook (prog-mode . lsp)
+;;   :commands lsp
+;;   :config
+;;   (use-package lsp-ui :commands lsp-ui-mode)
+;;   (use-package company-lsp :commands company-lsp)
+;;   (use-package dap-mode
+;;     :hook ((prog-mode . dap-mode) (prog-mode . dap-ui-mode))
+;;     :config
+;;     (require 'dap-python)))
+
+(use-package magit
+  :bind ("C-x g" . magit-status))
 
 (use-package markdown-mode
   :defer t
@@ -106,26 +120,14 @@
          ;; ("\C-c b" . org-switchb)
          ))
 
-(use-package prettier-js  ;; also: npm i --global prettier
-  :hook js2-mode)
-
-(use-package projectile
-  :pin MELPA
-  :config
-  (projectile-global-mode +1)
-  (setq projectile-enable-caching t)
-  :bind-keymap
-  ("M-p" . projectile-command-map)
-  )
-
-(use-package rainbow-mode
-  :ensure
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-mode))
+(use-package ranger
+  :config (ranger-override-dired-mode t))
 
 (use-package rjsx-mode
   :mode ("\\.js\\'" "\\.jsx\\'")
-  :config (setq js-indent-level 2))
+  :config
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+  (setq js-indent-level 2))
 
 (use-package smooth-scrolling
   :config

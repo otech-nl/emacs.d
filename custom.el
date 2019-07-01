@@ -73,7 +73,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (rainbow-mode ws-butler whole-line-or-region counsel discover blacken anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
+    (dap-javascript dap-python dap-mode company-lsp lsp-ui lsp-mode format-all ranger rainbow-mode ws-butler whole-line-or-region counsel discover anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
  '(projectile-project-search-path "~/src/")
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))

@@ -30,6 +30,20 @@
   (ivy-count-format "(%d/%d) ")
   :config (ivy-mode))
 
+(use-package projectile
+  :pin MELPA
+  :config
+  (projectile-global-mode +1)
+  (setq projectile-enable-caching t)
+  :bind-keymap
+  ("M-p" . projectile-command-map)
+  )
+
+(use-package rainbow-mode
+  :ensure
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-mode))
+
 (use-package outshine
   :defer t)
 

@@ -16,3 +16,4 @@ recentf
 tramp
 transient/
 flycheck_packages.el
+/.lsp-session-v1

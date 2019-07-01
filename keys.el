@@ -30,7 +30,8 @@
                     (let ((kill-read-only-ok t) deactivate-mark)
                       (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
 (global-set-key (kbd "C-c e") (lambda () (interactive) (find-file "~/src/notes/emacs.org")))
-(global-set-key (kbd "C-c f")  ; find org file
+(global-set-key (kbd "C-c f") 'format-all-buffer)
+(global-set-key (kbd "C-c C-f")  ; find org file
                 (lambda() (interactive)
                   (find-file (read-file-name "Find file: " org-directory))))
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
