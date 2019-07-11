@@ -30,6 +30,11 @@
   (ivy-count-format "(%d/%d) ")
   :config (ivy-mode))
 
+(use-package outline-magic
+  :ensure t
+  :config
+  (global-set-key (kbd "<C-tab>") 'outline-cycle))
+
 (use-package projectile
   :pin MELPA
   :config
@@ -43,6 +48,9 @@
   :ensure
   :config
   (add-hook 'prog-mode-hook 'rainbow-mode))
+
+(use-package ranger
+  :config (ranger-override-dired-mode t))
 
 (use-package outshine
   :defer t)

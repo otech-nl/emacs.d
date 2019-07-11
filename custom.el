@@ -10,13 +10,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
  '(column-number-mode t)
  '(create-lockfiles nil)
- '(custom-enabled-themes (quote (misterioso)))
+ '(custom-enabled-themes (quote (whiteboard)))
  '(custom-safe-themes
    (quote
-    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(default-directory "~/src/" t)
  '(deft-directory "~/src/blog/")
  '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
@@ -26,6 +28,7 @@
  '(display-time-24hr-format t)
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
+ '(gnus-thread-sort-functions (quote ((not gnus-thread-sort-by-most-recent-number))))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice
@@ -38,7 +41,7 @@
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/work.org" "~/Dropbox/org/administratie.org" "~/Dropbox/org/refile.org")))
+    ("~/Dropbox/org/work.org" "~/Dropbox/org/refile.org")))
  '(org-clock-auto-clock-resolution (quote when-no-clock-is-running))
  '(org-clock-history-length 10)
  '(org-clock-in-resume t)
@@ -73,7 +76,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (dap-javascript dap-python dap-mode company-lsp lsp-ui lsp-mode format-all ranger rainbow-mode ws-butler whole-line-or-region counsel discover anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
+    (feebleline spaceline-all-the-icons sr-speedbar outline-magic dap-javascript dap-python dap-mode company-lsp lsp-ui lsp-mode format-all ranger rainbow-mode ws-butler whole-line-or-region counsel discover anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
  '(projectile-project-search-path "~/src/")
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
@@ -81,6 +84,7 @@
  '(savehist-mode t)
  '(show-paren-mode t)
  '(size-indication-mode t)
+ '(smiley-style (quote medium))
  '(tab-always-indent (quote complete))
  '(tool-bar-mode nil)
  '(user-full-name "René Steetskamp")

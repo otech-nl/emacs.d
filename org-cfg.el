@@ -18,7 +18,9 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :STYLE: habit
 :REPEAT_TO_STATE: NEXT
 :END:
-")))
+")
+        ("c" "clock" item (clock))
+        ))
 
 
 
@@ -47,9 +49,9 @@ PROJECT is the current project."
                    ;; (mapconcat 'identity (plist-get data :tags) ":")
                    (plist-get data :contents))))))
 
-;(setq org-publish-project-alist nil)
-;(load "~/src/dwim/publish.el")
-;(load "~/src/fiction/rambling/publish.el")
+                                        ;(setq org-publish-project-alist nil)
+                                        ;(load "~/src/dwim/publish.el")
+                                        ;(load "~/src/fiction/rambling/publish.el")
 
 (provide 'org-cfg)
 ;;; org-cfg.el ends here

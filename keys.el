@@ -22,6 +22,7 @@
                   (forward-line 1) (transpose-lines 1) (forward-line -1)
                   (indent-according-to-mode)))
 
+(global-set-key (kbd "C-c a") (lambda () (interactive) (find-file "~/Dropbox/org/administratie.org")))
 (global-set-key (kbd "C-c b") 'eval-buffer)
 (global-set-key (kbd "C-c C-d") 'draft-mode)
 (global-set-key (kbd "C-c d")  ; duplicate line
@@ -34,12 +35,14 @@
 (global-set-key (kbd "C-c C-f")  ; find org file
                 (lambda() (interactive)
                   (find-file (read-file-name "Find file: " org-directory))))
+(global-set-key (kbd "C-c g") 'gnus)
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 (global-set-key (kbd "C-c C-i") (lambda () (interactive) (org-clock-in '(4))))
 (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
 (global-set-key (kbd "C-c J") 'org-clock-goto)
 (global-set-key (kbd "C-c k") (lambda () (interactive) (find-file "~/.emacs.d/keys.el")))
 (global-set-key (kbd "C-c l") 'package-list-packages)
+(global-set-key (kbd "C-c C-l") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c n") (lambda () (interactive) (deft)))
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c C-o") #'org-clock-out)
@@ -47,6 +50,8 @@
 (global-set-key (kbd "C-c C-p") 'org-publish)
 (global-set-key (kbd "C-c r") (lambda () (interactive) (find-file "~/Dropbox/org/refile.org")))
 (global-set-key (kbd "C-c s") 'sort-lines)
+(global-set-key (kbd "C-c t") (lambda () (interactive) (find-file "~/src/blog/rambling/pages/tarot.org")))
+(global-set-key (kbd "C-c C-s") 'sr-speedbar-toggle)
 (global-set-key (kbd "C-c u")  ;; dos2unix
                 (lambda() (interactive)
                   (revert-buffer-with-coding-system 'unix t)

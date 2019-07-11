@@ -13,7 +13,9 @@ org2web
 places
 projectile.cache
 recentf
+session.*
 tramp
 transient/
 flycheck_packages.el
+url/cookies
 /.lsp-session-v1

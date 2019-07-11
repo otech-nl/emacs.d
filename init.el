@@ -33,5 +33,10 @@
       (append completion-ignored-extensions
               '("-lock.json")))
 
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
 (provide 'init)
 ;;; init.el ends here

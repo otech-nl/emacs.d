@@ -52,8 +52,7 @@
   (add-hook
    'org-mode-hook
    (lambda ()
-     (setq captain-predicate
-           (lambda () (not (org-in-src-block-p)))))))
+     (setq captain-predicate (lambda () (not (org-in-src-block-p)))))))
 
 (use-package company
   :defer t)
@@ -82,7 +81,10 @@
   (setq ispell-list-command "--list")
   :config
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-  (add-hook 'text-mode-hook 'flyspell-mode))
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  ;; fix mouse
+  (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+  (define-key flyspell-mouse-map [mouse-3] #'undefined))
 
 (use-package gherkin-mode
   :defer t)
@@ -120,9 +122,6 @@
          ;; ("\C-c b" . org-switchb)
          ))
 
-(use-package ranger
-  :config (ranger-override-dired-mode t))
-
 (use-package rjsx-mode
   :mode ("\\.js\\'" "\\.jsx\\'")
   :config
@@ -133,6 +132,8 @@
   :config
   (smooth-scrolling-mode 1))
 
+;; (use-package sr-speedbar)
+
 (use-package telephone-line
   :config
   (telephone-line-mode 1))
@@ -141,7 +142,7 @@
   :mode ("\\.ts\\'" "\\.tsx\\'"))
 
 (use-package web-mode
-  :mode ("\\.html$" "\\.jinja2$" "\\.mustache$" "\\.djhtml$" ))
+  :mode ("\\.html$" "\\.mustache$" "\\.djhtml$" ))
 
 (use-package which-key
   :config (which-key-mode))
@@ -155,6 +156,7 @@
 (use-package writeroom-mode
   :defer t
   :config
+  (add-to-list 'writeroom-global-effects 'visual-line-mode)
   (setq writeroom-width 120))
 
 (use-package ws-butler  ;; clean up whitespace
