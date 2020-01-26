@@ -1,6 +1,11 @@
+;;; package --- hooks
 ;; -*- coding: utf-8-unix; -*-
 
+;;; Commentary:
 ;; link to this file from ~/.gnus.el
+
+;;; Code:
+
 
 ;; incoming
 (setq gnus-select-method '(nnnil "")  ; All servers are equal (no primary server):
@@ -42,3 +47,4 @@
       )
 
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+;;; gnus.el ends here

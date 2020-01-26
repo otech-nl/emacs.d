@@ -10,23 +10,21 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
  '(column-number-mode t)
+ '(completion-ignored-extensions
+   (append completion-ignored-extensions
+           '("-lock.json")))
  '(create-lockfiles nil)
- '(custom-enabled-themes (quote (whiteboard)))
- '(custom-safe-themes
-   (quote
-    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(default-directory "~/src/" t)
- '(deft-directory "~/src/blog/")
- '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
- '(deft-recursive t)
  '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
  '(display-time-24hr-format t)
  '(electric-pair-mode t)
+ '(frame-title-format
+   '((:eval (if (buffer-file-name)
+                (abbreviate-file-name (buffer-file-name))
+              "%b"))))
  '(global-auto-revert-mode t)
  '(gnus-thread-sort-functions (quote ((not gnus-thread-sort-by-most-recent-number))))
  '(indent-tabs-mode nil)
@@ -41,7 +39,7 @@
  '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/work.org" "~/Dropbox/org/refile.org")))
+    ("~/Dropbox/org/refile.org")))
  '(org-clock-auto-clock-resolution (quote when-no-clock-is-running))
  '(org-clock-history-length 10)
  '(org-clock-in-resume t)
@@ -57,17 +55,9 @@
  '(org-log-into-drawer t)
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
- '(org-refile-targets
-   (quote
-    (("archive.org" :maxlevel . 1)
-     ("work.org" :maxlevel . 1)
-     ("sysop.org" :maxlevel . 1))))
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-startup-with-inline-images t)
- '(org-todo-keywords
-   (quote
-    ((sequence "TODO(t)" "WIP(p)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))))
  '(package-archive-priorities (quote (("ELPA" . 10) ("MELPA-stable" . 5) ("MELPA" . 0))))
  '(package-archives
    (quote
@@ -76,8 +66,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (feebleline spaceline-all-the-icons sr-speedbar outline-magic dap-javascript dap-python dap-mode company-lsp lsp-ui lsp-mode format-all ranger rainbow-mode ws-butler whole-line-or-region counsel discover anaconda-mode prettier-js rjsx-mode yaml-mode typescript-mode smooth-scrolling writeroom-mode which-key web-mode use-package telephone-line smart-mode-line projectile pipenv outshine markdown-mode magit jinja2-mode htmlize gherkin-mode flycheck expand-region elpy dumb-jump draft-mode deft captain blog-admin auto-package-update)))
- '(projectile-project-search-path "~/src/")
+    (use-package magit)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
@@ -88,7 +77,7 @@
  '(tab-always-indent (quote complete))
  '(tool-bar-mode nil)
  '(user-full-name "René Steetskamp")
- '(user-mail-address "rene@steets.nl")
+ '(user-mail-address "steets@otech.nl")
  '(visible-bell t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

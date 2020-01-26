@@ -11,7 +11,6 @@
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
-;; (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'org-mode-hook
           (lambda ()
             ;; file modification date

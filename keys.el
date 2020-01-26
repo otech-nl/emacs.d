@@ -24,13 +24,11 @@
 
 (global-set-key (kbd "C-c a") (lambda () (interactive) (find-file "~/Dropbox/org/administratie.org")))
 (global-set-key (kbd "C-c b") 'eval-buffer)
-(global-set-key (kbd "C-c C-d") 'draft-mode)
 (global-set-key (kbd "C-c d")  ; duplicate line
                 (lambda () (interactive)
                   (save-excursion
                     (let ((kill-read-only-ok t) deactivate-mark)
                       (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
-(global-set-key (kbd "C-c e") (lambda () (interactive) (find-file "~/src/notes/emacs.org")))
 (global-set-key (kbd "C-c f") 'format-all-buffer)
 (global-set-key (kbd "C-c C-f")  ; find org file
                 (lambda() (interactive)
@@ -43,28 +41,20 @@
 (global-set-key (kbd "C-c k") (lambda () (interactive) (find-file "~/.emacs.d/keys.el")))
 (global-set-key (kbd "C-c l") 'package-list-packages)
 (global-set-key (kbd "C-c C-l") 'display-line-numbers-mode)
-(global-set-key (kbd "C-c n") (lambda () (interactive) (deft)))
-(global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c C-o") #'org-clock-out)
 (global-set-key (kbd "C-c p") (lambda () (interactive) (find-file "~/.emacs.d/packages.el")))
-(global-set-key (kbd "C-c C-p") 'org-publish)
 (global-set-key (kbd "C-c r") (lambda () (interactive) (find-file "~/Dropbox/org/refile.org")))
 (global-set-key (kbd "C-c s") 'sort-lines)
-(global-set-key (kbd "C-c t") (lambda () (interactive) (find-file "~/src/blog/rambling/pages/tarot.org")))
-(global-set-key (kbd "C-c C-s") 'sr-speedbar-toggle)
 (global-set-key (kbd "C-c u")  ;; dos2unix
                 (lambda() (interactive)
                   (revert-buffer-with-coding-system 'unix t)
                   (save-excursion
                     (goto-char (point-min))
                     (while (search-forward "" nil t) (replace-match "")))))
-(global-set-key (kbd "C-c C-w") 'writeroom-mode)
-(global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/Dropbox/org/work.org")))
 
 ;; overrides
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
-(global-set-key (kbd "M-/") 'hippie-expand)
 
 (provide 'keys)
 ;;; keys.el ends here
