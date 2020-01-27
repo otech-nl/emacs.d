@@ -1,9 +1,13 @@
 #+TITLE: My Emacs configuration
 
-I tend to bounce between Emacs and other editors (UltraEdit, Sublime, VS Code, ...). 
+I tend to bounce between Emacs and other editors (VS Code, Sublime, ...).
 When I am using Emacs I tend to grow my config until it feels too big. An then I start over.
 
 So, here it is. I’ll be working with this for a while.
+
+* 2020
+
+Back with a fresh start.
 
 * 2019
 

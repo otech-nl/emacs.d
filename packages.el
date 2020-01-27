@@ -31,10 +31,6 @@
 (use-package company
   :defer t)
 
-(use-package flycheck
-  :config
-  (add-hook 'prog-mode-hook #'flycheck-mode))
-
 (use-package flyspell
   :init
   (setq ispell-program-name "aspell")
@@ -45,21 +41,6 @@
   ;; fix mouse
   (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
   (define-key flyspell-mouse-map [mouse-3] #'undefined))
-
-(use-package magit
-  :bind ("C-x g" . magit-status))
-
-(use-package org
-  :ensure htmlize
-  :config
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (org-clock-persistence-insinuate)
-  :bind (("\C-c l" . org-store-link)
-         ("\C-c a" . org-agenda)
-         ("\C-c c" . org-capture)
-         ("\C-c t" . (lambda () (interactive) (org-todo-list 1) (delete-other-windows)))
-         ;; ("\C-c b" . org-switchb)
-         ))
 
 (provide 'packages)
 ;;; packages.el ends here

@@ -6,6 +6,7 @@
 
 ;;; Code:
 
+(require 'nnir)  ;; for searching
 
 ;; incoming
 (setq gnus-select-method '(nnnil "")  ; All servers are equal (no primary server):
@@ -13,7 +14,11 @@
       '((nnimap "gmail"
                 (nnimap-address "imap.gmail.com")
                 (nnimap-server-port "imaps")
-                (nnimap-stream ssl))))
+                (nnimap-stream ssl)
+                (nnir-search-engine imap)
+                (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")  ; Move expired messages to Gmail's trash.
+                (nnmail-expiry-wait immediate))) ; Mails marked as expired can be processed immediately.
+)
 
 ;; sending mail
 (setq smtpmail-smtp-server "smtp.gmail.com"
@@ -21,7 +26,7 @@
       smtpmail-smtp-service 587
       gnus-message-archive-method '(nnimap "imap.gmail.com")
       gnus-message-archive-group "[Gmail]/Sent Mail"
-      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]") ;; Make Gnus NOT ignore [Gmail] mailboxes
 
 ;; settings
 (setq user-mail-address "rsmetix@gmail.com"

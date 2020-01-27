@@ -22,13 +22,13 @@
                   (forward-line 1) (transpose-lines 1) (forward-line -1)
                   (indent-according-to-mode)))
 
-(global-set-key (kbd "C-c a") (lambda () (interactive) (find-file "~/Dropbox/org/administratie.org")))
 (global-set-key (kbd "C-c b") 'eval-buffer)
 (global-set-key (kbd "C-c d")  ; duplicate line
                 (lambda () (interactive)
                   (save-excursion
                     (let ((kill-read-only-ok t) deactivate-mark)
                       (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
+(global-set-key (kbd "C-c e") 'org-entities-help)
 (global-set-key (kbd "C-c f") 'format-all-buffer)
 (global-set-key (kbd "C-c C-f")  ; find org file
                 (lambda() (interactive)
@@ -39,11 +39,12 @@
 (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
 (global-set-key (kbd "C-c J") 'org-clock-goto)
 (global-set-key (kbd "C-c k") (lambda () (interactive) (find-file "~/.emacs.d/keys.el")))
-(global-set-key (kbd "C-c l") 'package-list-packages)
 (global-set-key (kbd "C-c C-l") 'display-line-numbers-mode)
+(global-set-key (kbd "C-c n") (lambda () (interactive) (find-file "~/Dropbox/org/notes.org")))
+(global-set-key (kbd "C-c m") 'wl)
 (global-set-key (kbd "C-c C-o") #'org-clock-out)
+(global-set-key (kbd "C-c r") 'package-list-packages)
 (global-set-key (kbd "C-c p") (lambda () (interactive) (find-file "~/.emacs.d/packages.el")))
-(global-set-key (kbd "C-c r") (lambda () (interactive) (find-file "~/Dropbox/org/refile.org")))
 (global-set-key (kbd "C-c s") 'sort-lines)
 (global-set-key (kbd "C-c u")  ;; dos2unix
                 (lambda() (interactive)

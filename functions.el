@@ -37,6 +37,5 @@
                (message (format "%s: %d" key val)))
              table)))
 
-
 (provide 'functons)
 ;;; functions.el ends here
