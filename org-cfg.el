@@ -28,6 +28,7 @@
     '("org-mode header"
       "#+TITLE: " (file-name-base (buffer-file-name)) \n
       "#+DATE: " (format-time-string "%Y-%m-%d") \n
+      "#+LANGUAGE: nl" \n
       \n
       )))
 

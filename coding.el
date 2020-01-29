@@ -11,11 +11,19 @@
   :config
   (add-hook 'prog-mode-hook #'flycheck-mode))
 
-(use-package anaconda-mode  ;; includes pipenv
-  ;; consider https://github.com/pythonic-emacs/company-anaconda
-  :defer t
-  :hook python-mode
-  :hook (python-mode . eldoc-mode))
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+;; (use-package anaconda-mode  ;; includes pipenv
+;;   ;; consider https://github.com/pythonic-emacs/company-anaconda
+;;   :defer t
+;;   :hook python-mode
+;;   :hook (python-mode . anaconda-eldoc-mode))
+
+;; (use-package company-anaconda
+;;   :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package format-all
   :hook (prog-mode . format-all-mode))
@@ -28,11 +36,11 @@
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
 
-;; (use-package rjsx-mode
-;;   :mode ("\\.js\\'" "\\.jsx\\'")
-;;   :config
-;;   (add-hook 'rjsx-mode-hook 'prettier-js-mode)
-;;   (setq js-indent-level 2))
+(use-package rjsx-mode
+  :mode ("\\.js\\'" "\\.jsx\\'")
+  :config
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+  (setq js-indent-level 2))
 
 (use-package tide
   :ensure t

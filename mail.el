@@ -5,10 +5,6 @@
 
 ;;; Code:
 
-(use-package apel)
-(use-package flim)
-(use-package semi)
-
 (use-package wl
   ;; The name of the package in MELPA is "wanderlust" but the
   ;; feature provided by that package is 'wl

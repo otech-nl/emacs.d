@@ -2,11 +2,14 @@
 *~
 .last-package-update-day
 .org-id-locations
+/.lsp-session-v1
 ac-comphist.dat
 bookmarks
 ede-projects.el
 elpa
+elpy
 eshell
+flycheck_packages.el
 history
 org-clock-save.el
 org2web
@@ -16,6 +19,4 @@ recentf
 session.*
 tramp
 transient/
-flycheck_packages.el
 url/cookies
-/.lsp-session-v1
