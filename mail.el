@@ -31,10 +31,36 @@
    wl-fcc-force-as-read t  ; Mark sent messages as read
    wl-local-domain "gmail.com"
    wl-message-id-domain "smtp.gmail.com"
+   wl-message-ignored-field-list '("^.*")
+   wl-message-visible-field-list '("^From:" "^To:" "^Cc:" "^Date:" "^Subject:")
    wl-quicksearch-folder "%[Gmail]/All Mail:rsmetix@imap.gmail.com"
    wl-trash-folder "%[Gmail]/Trash"
    wl-from "René Steetskamp <steets@otech.nl>"
    wl-folder-check-async t
+
+   wl-message-sort-field-list wl-message-visible-field-list
+   wl-summary-width 120 ;; No width
+   wl-summary-default-sort-spec 'date
+   wl-message-window-size '(1 . 2)
+
+   ;; Always download emails without confirmation
+   wl-prefetch-threshold nil
+   wl-message-buffer-prefetch-threshold nil
+   elmo-message-fetch-threshold nil
+
+   ;; Rendering of messages using 'shr', Emacs' simple html
+   ;; renderer, but without fancy coloring that distorts the
+   ;; looks
+   mime-view-text/html-previewer 'shr
+   shr-use-colors nil
+
+   wl-draft-config-alist
+   '(((string-match "1" "1")
+      (bottom . "\n--\n") (bottom-file . "~/.signature"))
+     )
+
+   ;; don't ****ing split large messages
+   mime-edit-split-message nil
    )
 
   (autoload 'wl-user-agent-compose "wl-draft" nil t)

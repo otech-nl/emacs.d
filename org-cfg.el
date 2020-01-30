@@ -41,20 +41,20 @@
      (setq captain-predicate (lambda () (not (org-in-src-block-p)))))))
 
 (setq org-capture-templates
-      `(("t" "todo" entry (file "~/Dropbox/org/refile.org") "* TODO %?\n%U\n%a")
+      `(("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a" :prepend t)
 
-        ("n" "note" entry (file "~/Dropbox/org/refile.org") "* %? :NOTE:\n%U\n%a")
+        ("n" "note" entry (file org-default-notes-file) "* %? :NOTE:\n%U\n%a")
 
-        ("m" "meeting" entry (file "~/Dropbox/org/refile.org") "* MEETING with %? :MEETING:\n%U")
+        ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
 
-        ("h" "habit" entry (file "~/Dropbox/org/refile.org") "* NEXT %?\n%U\n%a
+        ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
 SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :PROPERTIES:
 :STYLE: habit
 :REPEAT_TO_STATE: NEXT
 :END:
 ")
-        ("c" "clock" item (clock))
+        ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
         ))
 
 (provide 'org-cfg)

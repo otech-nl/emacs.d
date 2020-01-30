@@ -11,19 +11,10 @@
   :config
   (add-hook 'prog-mode-hook #'flycheck-mode))
 
-(use-package elpy
+(use-package elpy  ;; also use elpy-config
   :ensure t
   :init
   (elpy-enable))
-
-;; (use-package anaconda-mode  ;; includes pipenv
-;;   ;; consider https://github.com/pythonic-emacs/company-anaconda
-;;   :defer t
-;;   :hook python-mode
-;;   :hook (python-mode . anaconda-eldoc-mode))
-
-;; (use-package company-anaconda
-;;   :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package format-all
   :hook (prog-mode . format-all-mode))
