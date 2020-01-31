@@ -1,7 +1,8 @@
-;;; package --- functions
+;;; package --- me
 
 ;;; Commentary:
-;; some functions in org-cfg.el
+;; some personal definitions of my functions and variables
+;; names start with "me/"
 
 ;;; Code:
 
@@ -37,5 +38,23 @@
                (message (format "%s: %d" key val)))
              table)))
 
-(provide 'functons)
-;;; functions.el ends here
+(setq me/root-dir
+      (pcase system-type
+        ("windows-nt" "S:\\")
+        ("cygwin" "/s/")
+        (code "~/src/")
+        ))
+
+(defun me/path-join (root &rest dirs)
+  "like Python's os.path.join"
+  (if (not dirs) root
+    (apply 'me/path-join
+           (expand-file-name (car dirs) root)
+           (cdr dirs))))
+
+(defun me/org-file (name)
+  "Return path to org file"
+  (me/path-join me/root-dir "org" (concat name ".org")))
+
+(provide 'me)
+;;; me.el ends here
