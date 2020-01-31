@@ -10,6 +10,11 @@
   :config
   (add-hook 'org-mode-hook 'org-indent-mode)
   (org-clock-persistence-insinuate)
+  (setq org-agenda-custom-commands
+        '(("p" "TODOs sorted by priority, deadline, schedule"
+           todo "TODO|NEXT|ACTIVE|WAITING"
+           ((org-agenda-overriding-header "\nTODOs sorted by priority, deadline, schedule, state")
+            (org-agenda-sorting-strategy '(priority-down deadline-up scheduled-up todo-state-down))))))
   :bind (("\C-c l" . org-store-link)
          ("\C-c a" . org-agenda)
          ("\C-c c" . org-capture)

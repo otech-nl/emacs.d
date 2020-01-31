@@ -85,7 +85,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (elpy company-anaconda rjsx-mode dash captain yaml-mode web-mode tide oauth2 wanderlust htmlize flycheck company auto-package-update use-package magit)))
+    (which-key elpy company-anaconda rjsx-mode dash captain yaml-mode web-mode tide oauth2 wanderlust htmlize flycheck company auto-package-update use-package magit)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
