@@ -17,6 +17,9 @@
     (progn
       (message "Loaded %s %s" f (load f)))))
 
+;; try this for literate init
+;; (org-babel-load-file (expand-file-name "~/.emacs.d/init.org"))
+
 ;;; odd & ends
 
 ;; (cua-mode t)
