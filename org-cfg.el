@@ -26,29 +26,28 @@
             ))
           ("l" "TODOs for later"
            todo "SOMEDAY"
-           ((org-agenda-sorting-strategy '(todo-state-up priority-down))))))
-  :bind (("\C-c l" . org-store-link)
-         ("\C-c a" . org-agenda)
-         ("\C-c c" . org-capture)
-         ("\C-c t" . (lambda () (interactive) (org-todo-list 1) (delete-other-windows)))
-         ))
+           ((org-agenda-sorting-strategy '(todo-state-up priority-down)))))
+        org-capture-templates
+        `(("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a" :prepend t)
 
-(setq org-capture-templates
-      `(("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a" :prepend t)
+          ("n" "note" entry (file org-default-notes-file) "* %? :NOTE:\n%U\n%a")
 
-        ("n" "note" entry (file org-default-notes-file) "* %? :NOTE:\n%U\n%a")
+          ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
 
-        ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
-
-        ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
+          ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
 SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :PROPERTIES:
 :STYLE: habit
 :REPEAT_TO_STATE: NEXT
 :END:
 ")
-        ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
-        ))
+          ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
+          ))
+  :bind (("\C-c l" . org-store-link)
+         ("\C-c a" . org-agenda)
+         ("\C-c c" . org-capture)
+         ("\C-c t" . (lambda () (interactive) (org-todo-list 1) (delete-other-windows)))
+         ))
 
 (use-package autoinsert
   :config

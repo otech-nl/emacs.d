@@ -56,5 +56,11 @@
   "Return path to org file"
   (me/path-join me/root-dir "org" (concat name ".org")))
 
+
+(defun me/find-file(directory)
+  "Find a file in DIRECTORY"
+  (interactive)
+  (find-file (read-file-name "Find file: " directory)))
+
 (provide 'me)
 ;;; me.el ends here

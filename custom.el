@@ -10,6 +10,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
  '(column-number-mode t)
  '(compilation-scroll-output (quote first-error))
@@ -73,17 +77,15 @@
  '(org-mobile-inbox-for-pull "~/src/org/refile.org")
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
- '(org-refile-targets
-   (quote
-    (("~/src/dwim/posts/index.org" :level . 0)
-     ("~/src/org/notes.org" :level . 1))))
- '(org-refile-use-outline-path (quote full-file-path))
+ '(org-refile-targets (quote (("~/src/org/notes.org" :level . 1))))
+ '(org-refile-use-outline-path nil)
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-startup-with-inline-images t)
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)"))))
+ '(org-use-speed-commands t)
  '(package-archive-priorities (quote (("ELPA" . 10) ("MELPA" . 5) ("MELPA-stable" . 0))))
  '(package-archives
    (quote
@@ -92,7 +94,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (projectile prettier-js writegood-mode captain htmlize yaml-mode web-mode tide rjsx-mode pipenv markdown-mode magit highlight-indent-guides gherkin-mode format-all flycheck elpy dockerfile-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
+    (powerthesaurus neotree minimap diminish activity-watch-mode mu4e projectile prettier-js writegood-mode captain htmlize yaml-mode web-mode tide rjsx-mode pipenv markdown-mode magit highlight-indent-guides gherkin-mode format-all flycheck elpy dockerfile-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)

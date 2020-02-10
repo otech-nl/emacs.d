@@ -5,11 +5,9 @@
 ;;; Code:
 
 (use-package dockerfile-mode
-  :ensure t
   :mode "^Dockerfile$")
 
 (use-package elpy  ;; also use elpy-config
-  :ensure t
   :hook (elpy-mode . (lambda () (highlight-indentation-mode -1)))
   :init
   (elpy-enable))
@@ -37,7 +35,6 @@
   :bind ("C-x g" . magit-status))
 
 (use-package markdown-mode
-  :defer t
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
 
@@ -59,7 +56,6 @@
   (setq js-indent-level 2))
 
 (use-package tide
-  :ensure t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
