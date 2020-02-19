@@ -24,7 +24,6 @@
                   (forward-line 1) (transpose-lines 1) (forward-line -1)
                   (indent-according-to-mode)))
 
-(global-set-key (kbd "C-c a") 'powerthesaurus-lookup-word-dwim)
 (global-set-key (kbd "C-c b") 'eval-buffer)
 (global-set-key (kbd "C-c d")  ; duplicate line
                 (lambda () (interactive)
@@ -36,7 +35,7 @@
 (global-set-key (kbd "C-c g") 'gnus)
 (global-set-key (kbd "C-c i") (lambda () (interactive) (me/find-file "~/.emacs.d/")))
 (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
-(global-set-key (kbd "C-c l") 'display-line-numbers-mode)
+;; (global-set-key (kbd "C-c l") 'display-line-numbers-mode)
 (global-set-key (kbd "C-c m") 'mu4e)
 (global-set-key (kbd "C-c n") 'neotree-toggle)
 (global-set-key (kbd "C-c o b") (lambda () (interactive) (find-file "~/src/dwim/posts/index.org")))
@@ -44,7 +43,10 @@
 (global-set-key (kbd "C-c o f") (lambda () (interactive) (me/find-file org-directory)))
 (global-set-key (kbd "C-c o i") (lambda () (interactive) (org-clock-in '(4))))
 (global-set-key (kbd "C-c o j") 'org-clock-goto)
+(global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file "~/src/org/notes.org")))
 (global-set-key (kbd "C-c o o") #'org-clock-out)
+(global-set-key (kbd "C-c o v") 'org-velocity)
+(global-set-key (kbd "C-c o w") (lambda () (interactive) (find-file "~/src/fiction/process.org")))
 (global-set-key (kbd "C-c r") 'package-list-packages)
 (global-set-key (kbd "C-c s") 'sort-lines)
 (global-set-key (kbd "C-c t") 'ansi-term)
@@ -54,6 +56,8 @@
                   (save-excursion
                     (goto-char (point-min))
                     (while (search-forward "" nil t) (replace-match "")))))
+(global-set-key (kbd "C-c v") 'insert-char)
+(global-set-key (kbd "C-c w") 'powerthesaurus-lookup-word-dwim)
 
 ;; overrides
 (global-set-key (kbd "C-x C-b") 'ibuffer)

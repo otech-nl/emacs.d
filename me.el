@@ -62,5 +62,16 @@
   (interactive)
   (find-file (read-file-name "Find file: " directory)))
 
+(defun me/god-mode-line ()
+  "Change mode line in God mode "
+  (cond (god-local-mode
+         (progn
+           (set-face-background 'mode-line "tomato")
+           (set-face-background 'mode-line-inactive "firebrick")))
+        (t (progn
+             (set-face-background 'mode-line me/mode-line-background)
+             (set-face-background 'mode-line-inactive me/mode-line-background-inactive)))))
+
+
 (provide 'me)
 ;;; me.el ends here

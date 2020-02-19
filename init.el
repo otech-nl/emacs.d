@@ -9,7 +9,7 @@
 (let ((config-files
        (mapcar
         (lambda (f) (expand-file-name (concat f ".el") user-emacs-directory))
-        (list "custom" "hooks" "me" "packages" "coding" "org-cfg" "keys"))))
+        (list "custom" "hooks" "me" "packages" "mail" "dev" "org-cfg" "keys" "contrib/org-velocity"))))
   ;; keep custom file separate
   (setq custom-file (car config-files))
   ;; load config files
@@ -32,3 +32,4 @@
 
 (provide 'init)
 ;;; init.el ends here
+(put 'narrow-to-region 'disabled nil)

@@ -15,9 +15,12 @@
            todo "DONE|CANCELLED|DEFERRED"
            ((org-agenda-log-mode-items '(clock state))
             (org-agenda-sorting-strategy '(timestamp-down))))
+          ("o" "Open TODOs"
+           todo "TODO|NEXT|ACTIVE"
+           ((org-agenda-log-mode-items '(clock state))
+            (org-agenda-sorting-strategy '(priority-down todo-state-down timestamp-down))))
           ("p" "Review previous month"
            agenda ""
-           ;; agenda settings
            ((org-agenda-span 'month)
             (org-agenda-start-day "-1m")
             (org-agenda-start-with-log-mode t)
@@ -28,12 +31,10 @@
            todo "SOMEDAY"
            ((org-agenda-sorting-strategy '(todo-state-up priority-down)))))
         org-capture-templates
-        `(("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a" :prepend t)
-
-          ("n" "note" entry (file org-default-notes-file) "* %? :NOTE:\n%U\n%a")
-
-          ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
-
+        `(("b" "blog" entry (file "~/src/dwim/posts/index.org") "* DRAFT %?\n%a"
+           :prepend t
+           :emtpy-lines 1
+           :unnarrowed t)
           ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
 SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :PROPERTIES:
@@ -42,12 +43,23 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :END:
 ")
           ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
+          ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
+          ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
+           :prepend t
+           :emtpy-lines 1
+           :unnarrowed t)
+          ("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a"
+           :prepend t
+           :emtpy-lines 1
+           :unnarrowed t)
+          ("w" "writing" entry (file "~/src/fiction/process.org") "* %?\n%a"
+           :prepend t
+           :emtpy-lines 1
+           :unnarrowed t)
           ))
-  :bind (("\C-c l" . org-store-link)
-         ("\C-c a" . org-agenda)
+  :bind (("\C-c a" . org-agenda)
          ("\C-c c" . org-capture)
-         ("\C-c t" . (lambda () (interactive) (org-todo-list 1) (delete-other-windows)))
-         ))
+         ("\C-c l" . org-store-link)))
 
 (use-package autoinsert
   :config
@@ -64,15 +76,19 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
       )))
 
 (use-package captain
-  :defer t
+  :disabled t  ;; I don't think I use it
   :config
   (add-hook
    'org-mode-hook
    (lambda ()
      (setq captain-predicate (lambda () (not (org-in-src-block-p)))))))
 
+(use-package smog
+  :disabled t  ;; not acionable
+  :config (setq smog-command "style -L en -p"))
+
+;; https://github.com/bnbeckwith/writegood-mode
 (use-package writegood-mode
-  :ensure t
   :commands writegood-mode
   :diminish writegood-mode
   :init (mapcar (lambda (mode-hook)

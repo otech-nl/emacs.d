@@ -75,6 +75,7 @@
  '(org-log-into-drawer t)
  '(org-mobile-directory "~/Dropbox/org/")
  '(org-mobile-inbox-for-pull "~/src/org/refile.org")
+ '(org-modules (quote (org-habit org-info org-mouse org-velocity)))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
  '(org-refile-targets (quote (("~/src/org/notes.org" :level . 1))))
@@ -94,7 +95,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (powerthesaurus neotree minimap diminish activity-watch-mode mu4e projectile prettier-js writegood-mode captain htmlize yaml-mode web-mode tide rjsx-mode pipenv markdown-mode magit highlight-indent-guides gherkin-mode format-all flycheck elpy dockerfile-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
+    (docker org-velocity god-mode jinja2-mode blacken powerthesaurus neotree minimap diminish activity-watch-mode mu4e projectile prettier-js writegood-mode htmlize yaml-mode web-mode rjsx-mode pipenv markdown-mode magit highlight-indent-guides gherkin-mode elpy dockerfile-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)

@@ -1,5 +1,6 @@
 *.eld
 *~
+.cache
 .last-package-update-day
 .org-id-locations
 /.lsp-session-v1
@@ -11,14 +12,15 @@ elpy
 eshell
 flycheck_packages.el
 history
+network-security.data
 org-clock-save.el
 org2web
 places
 projectile.cache
 recentf
+request
 session.*
 tramp
 transient/
+tutorial
 url/cookies
-.cache
-request

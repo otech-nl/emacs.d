@@ -4,6 +4,12 @@
 
 ;;; Code:
 
+(use-package blacken
+  :config
+  (add-hook 'python-mode-hook 'blacken-mode))
+
+(use-package docker)
+
 (use-package dockerfile-mode
   :mode "^Dockerfile$")
 
@@ -13,12 +19,10 @@
   (elpy-enable))
 
 (use-package flycheck
+  :disabled t  ;; use tools like prettier-js and black
   :diminish " ✓"
   :config
   (add-hook 'prog-mode-hook #'flycheck-mode))
-
-(use-package format-all
-  :hook (prog-mode . format-all-mode))
 
 (use-package gherkin-mode
   :defer t)
@@ -30,6 +34,10 @@
         highlight-indent-guides-auto-odd-face-perc 15
         highlight-indent-guides-auto-even-face-perc 15
         highlight-indent-guides-auto-character-face-perc 20))
+
+
+(use-package jinja2-mode
+  :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
 
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -50,19 +58,20 @@
   (projectile-mode +1))
 
 (use-package rjsx-mode
-  :mode ("\\.js\\'" "\\.jsx\\'")
+  :mode ("\\.js\\'" "\\.jsx\\'" "\\.ts\\'" "\\.tsx\\'")
   :config
   (add-hook 'rjsx-mode-hook 'prettier-js-mode)
   (setq js-indent-level 2))
 
 (use-package tide
+  :disabled t  ;; I don't seem to use it
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
 (use-package web-mode
-  :mode ("\\.html$" "\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
+  :mode ("\\.html$"))
 
 (use-package whitespace
   :init
