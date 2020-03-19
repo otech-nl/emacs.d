@@ -11,9 +11,11 @@
 (use-package docker)
 
 (use-package dockerfile-mode
+  :disabled t  ;; trying LSP
   :mode "^Dockerfile$")
 
 (use-package elpy  ;; also use elpy-config
+  :disabled t  ;; trying LSP
   :hook (elpy-mode . (lambda () (highlight-indentation-mode -1)))
   :init
   (elpy-enable))
@@ -28,6 +30,7 @@
   :defer t)
 
 (use-package highlight-indent-guides
+  :disabled t  ;; trying LSP
   :hook (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character
@@ -35,9 +38,35 @@
         highlight-indent-guides-auto-even-face-perc 15
         highlight-indent-guides-auto-character-face-perc 20))
 
-
 (use-package jinja2-mode
   :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
+
+;; https://github.com/emacs-lsp/lsp-mode
+(use-package lsp-mode
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  :init (setq lsp-keymap-prefix "C-c h")
+  :hook ((python-mode . lsp)
+         (c-mode . lsp)
+         (c++-mode . lsp)
+         (js-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-position 'at-point
+        lsp-ui-flycheck-enable t))
+
+(use-package company-lsp
+  :requires company
+  :commands company-lsp
+  :config (push 'company-lsp company-backends))
+
+;; optionally if you want to use debugger
+;; (use-package dap-mode)
+;; (use-package dap-python)
+;; (use-package dap-javascript)
 
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -47,9 +76,13 @@
          ("\\.md\\'" . markdown-mode)))
 
 (use-package pipenv
+  :disabled t  ;; trying LSP
   :hook (python-mode . pipenv-mode))
 
-(use-package prettier-js)
+(use-package prettier-js
+  :config
+  (add-hook 'json-mode-hook 'prettier-js-mode)
+)
 
 ;; project interaction (https://docs.projectile.mx/)
 (use-package projectile
@@ -71,6 +104,7 @@
          (before-save . tide-format-before-save)))
 
 (use-package web-mode
+  :disabled t  ;; trying LSP
   :mode ("\\.html$"))
 
 (use-package whitespace
@@ -79,7 +113,9 @@
     (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook #'whitespace-cleanup))
 
-(use-package yaml-mode)
+(use-package yaml-mode
+  :disabled t  ;; trying LSP
+  )
 
 (provide 'filetypes)
 ;;; filetypes.el ends here

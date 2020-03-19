@@ -144,5 +144,14 @@
   :config
   (which-key-mode))
 
+;; http://joaotavora.github.io/yasnippet/
+(use-package yasnippet
+  :disabled t  ;; too complex
+  :diminish yas-minor-mode
+  :config
+  (use-package yasnippet-snippets)
+  (yas-global-mode 1)
+  )
+
 (provide 'packages)
 ;;; packages.el ends here

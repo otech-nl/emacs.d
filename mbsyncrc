@@ -15,8 +15,8 @@ IMAPStore gmail-remote # <-- user defined name
 Account gmail # <-- the account name defined in Account section
 
 MaildirStore gmail-local
-Path ~/Mail/rsmetix/
-Inbox ~/Mail/rsmetix/inbox/
+Path ~/mail/rsmetix/
+Inbox ~/mail/rsmetix/inbox/
 
 Channel gmail-inbox
 Master :gmail-remote: # <-- remote store

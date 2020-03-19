@@ -22,7 +22,7 @@
            (quote
             ("-lock.json" ".pyc"))))
  '(create-lockfiles nil)
- '(custom-enabled-themes (quote (whiteboard)))
+ '(custom-enabled-themes (quote (misterioso)))
  '(default-directory "~/src/" t)
  '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
@@ -47,7 +47,6 @@
  '(kill-whole-line t)
  '(load-prefer-newer t)
  '(midnight-mode t)
- '(mouse-avoidance-mode (quote animate) nil (avoid))
  '(org-agenda-files (quote ("~/src/org/notes.org")))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
@@ -66,6 +65,7 @@
  '(org-default-notes-file "~/src/org/notes.org")
  '(org-default-priority 67)
  '(org-directory "~/src/org/")
+ '(org-duration-format (quote ((special . h:mm))))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
@@ -78,7 +78,7 @@
  '(org-modules (quote (org-habit org-info org-mouse org-velocity)))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
- '(org-refile-targets (quote (("~/src/org/notes.org" :level . 1))))
+ '(org-refile-targets (quote (("~/src/org/notes.org" :level . 2))))
  '(org-refile-use-outline-path nil)
  '(org-startup-folded nil)
  '(org-startup-indented t)
@@ -95,7 +95,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (docker org-velocity god-mode jinja2-mode blacken powerthesaurus neotree minimap diminish activity-watch-mode mu4e projectile prettier-js writegood-mode htmlize yaml-mode web-mode rjsx-mode pipenv markdown-mode magit highlight-indent-guides gherkin-mode elpy dockerfile-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
+    (kivy-mode jinja2-mode gherkin-mode blacken prettier-js rjsx-mode htmlize elpy powerthesaurus neotree minimap company-lsp lsp-ui lsp-mode lsp-docker docker org-velocity god-mode diminish activity-watch-mode projectile writegood-mode magit which-key doom-modeline all-the-icons auto-package-update use-package)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)

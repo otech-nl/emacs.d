@@ -87,7 +87,7 @@
   (setq mail-user-agent 'mu4e-user-agent
 
         ;; mu4e
-        mu4e-maildir "~/Mail"
+        mu4e-maildir "~/mail"
         mu4e-sent-messages-behavior 'delete  ;; done by IMAP
         ;; mu4e-maildir-shortcuts '( ("/rsmetix/inbox"               . ?i)
         ;;                           ("/rsmetix/send"   . ?s)
@@ -174,6 +174,9 @@
 ;;     )
 ;;   (run-with-timer 0 60 'gjstein-refresh-mu4e-alert-mode-line))
 
+(use-package notmuch
+  :disabled t  ;; m
+  :bind ("C-c m" . notmuch))
 
 (provide 'mail)
 ;;; mail.el ends here

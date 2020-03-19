@@ -43,7 +43,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :END:
 ")
           ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
-          ("m" "meeting" entry (file org-default-notes-file) "* MEETING with %? :MEETING:\n%U")
+          ("m" "meeting" entry (file org-default-notes-file) "* %U: %?               :meeting:\nWith:\n\n")
           ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
            :prepend t
            :emtpy-lines 1
