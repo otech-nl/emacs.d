@@ -85,7 +85,7 @@
  '(org-modules (quote (org-habit org-info org-mouse org-velocity)))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
- '(org-refile-targets (quote ((my/org-path "notes.org") :level . 2)))
+ '(org-refile-targets (quote ((org-agenda-files :level . 2))))
  '(org-refile-use-outline-path nil)
  '(org-startup-folded nil)
  '(org-startup-indented t)
