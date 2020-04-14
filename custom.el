@@ -5,6 +5,13 @@
 
 ;;; Code:
 
+
+(setq my/org-dir (cond ((eq system-type 'gnu/linux) "/media/steets/Shared/org/")
+                       ((eq system-type 'windows-nt) "S:/org/" "")
+                       ((eq system-type 'cygwin) "/cygdrive/s/org/" "")))
+
+(defun my/org-path (path) (concat my/org-dir path))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -47,11 +54,11 @@
  '(kill-whole-line t)
  '(load-prefer-newer t)
  '(midnight-mode t)
- '(org-agenda-files (quote ("~/src/org/notes.org")))
+ '(org-agenda-files (list (my/org-path "notes.org")))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
  '(org-agenda-skip-scheduled-if-done t)
- '(org-archive-location "~/src/org/archive.org::datetree/* %s")
+ '(org-archive-location (my/org-path "archive.org::datetree/* %s"))
  '(org-catch-invisible-edits (quote show))
  '(org-clock-auto-clock-resolution (quote when-no-clock-is-running))
  '(org-clock-clocktable-default-properties (quote (:maxlevel 2 :scope agenda :block lastmonth)))
@@ -62,9 +69,9 @@
  '(org-clock-persist-query-resume nil)
  '(org-clock-report-include-clocking-task t)
  '(org-columns t)
- '(org-default-notes-file "~/src/org/notes.org")
+ '(org-default-notes-file (my/org-path "notes.org"))
  '(org-default-priority 67)
- '(org-directory "~/src/org/")
+ '(org-directory my/org-dir)
  '(org-duration-format (quote ((special . h:mm))))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
@@ -74,15 +81,16 @@
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
  '(org-mobile-directory "~/Dropbox/org/")
- '(org-mobile-inbox-for-pull "~/src/org/refile.org")
+ '(org-mobile-inbox-for-pull (my/org-path "refile.org"))
  '(org-modules (quote (org-habit org-info org-mouse org-velocity)))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
- '(org-refile-targets (quote (("~/src/org/notes.org" :level . 2))))
+ '(org-refile-targets (quote ((my/org-path "notes.org") :level . 2)))
  '(org-refile-use-outline-path nil)
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-startup-with-inline-images t)
+ '(org-support-shift-select t)
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)"))))

@@ -24,7 +24,7 @@
            ((org-agenda-span 'month)
             (org-agenda-start-day "-1m")
             (org-agenda-start-with-log-mode t)
-            (org-agenda-log-mode-iteqms '(clock state))
+            (org-agenda-log-mode-items '(clock state))
             (org-agenda-archives-mode t) ; include archive files
             ))
           ("l" "TODOs for later"
@@ -43,6 +43,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :END:
 ")
           ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
+          ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
           ("m" "meeting" entry (file org-default-notes-file) "* %U: %?               :meeting:\nWith:\n\n")
           ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
            :prepend t
