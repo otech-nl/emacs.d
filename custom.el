@@ -82,7 +82,7 @@
  '(org-log-into-drawer t)
  '(org-mobile-directory "~/Dropbox/org/")
  '(org-mobile-inbox-for-pull (my/org-path "refile.org"))
- '(org-modules (quote (org-habit org-info org-mouse org-velocity)))
+ '(org-modules (quote (org-mouse)))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
  '(org-refile-targets (quote ((org-agenda-files :level . 2))))
@@ -103,7 +103,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (kivy-mode jinja2-mode gherkin-mode blacken prettier-js rjsx-mode htmlize elpy powerthesaurus neotree minimap company-lsp lsp-ui lsp-mode lsp-docker docker org-velocity god-mode diminish activity-watch-mode projectile writegood-mode magit which-key doom-modeline all-the-icons auto-package-update use-package)))
+    (tj3-mode kivy-mode jinja2-mode gherkin-mode blacken prettier-js rjsx-mode htmlize elpy powerthesaurus neotree minimap company-lsp lsp-ui lsp-mode lsp-docker docker org-velocity god-mode diminish activity-watch-mode projectile writegood-mode magit which-key doom-modeline all-the-icons auto-package-update use-package)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)
