@@ -9,34 +9,12 @@
   (add-hook 'python-mode-hook 'blacken-mode))
 
 (use-package docker)
-
+(use-package docker-compose-mode)
 (use-package dockerfile-mode
-  :disabled t  ;; trying LSP
   :mode "^Dockerfile$")
-
-(use-package elpy  ;; also use elpy-config
-  :disabled t  ;; trying LSP
-  :hook (elpy-mode . (lambda () (highlight-indentation-mode -1)))
-  :init
-  (elpy-enable))
-
-(use-package flycheck
-  :disabled t  ;; use tools like prettier-js and black
-  :diminish " ✓"
-  :config
-  (add-hook 'prog-mode-hook #'flycheck-mode))
 
 (use-package gherkin-mode
   :defer t)
-
-(use-package highlight-indent-guides
-  :disabled t  ;; trying LSP
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character
-        highlight-indent-guides-auto-odd-face-perc 15
-        highlight-indent-guides-auto-even-face-perc 15
-        highlight-indent-guides-auto-character-face-perc 20))
 
 (use-package jinja2-mode
   :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
@@ -49,6 +27,7 @@
          (c-mode . lsp)
          (c++-mode . lsp)
          (js-mode . lsp)
+         (typescript-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -80,8 +59,9 @@
   :hook (python-mode . pipenv-mode))
 
 (use-package prettier-js
-  :config
+  :init
   (add-hook 'json-mode-hook 'prettier-js-mode)
+  (add-hook 'typescript-mode-hook 'prettier-js-mode)
 )
 
 ;; project interaction (https://docs.projectile.mx/)
@@ -91,13 +71,18 @@
   (projectile-mode +1))
 
 (use-package rjsx-mode
-  :mode ("\\.js\\'" "\\.jsx\\'" "\\.ts\\'" "\\.tsx\\'")
+  :mode ("\\.js\\'" "\\.jsx\\'")
   :config
   (add-hook 'rjsx-mode-hook 'prettier-js-mode)
   (setq js-indent-level 2))
 
+(use-package typescript-mode
+  :mode ("\\.ts\\'" "\\.tsx\\'")
+  :config
+  (setq typescript-indent-level 2))
+
 (use-package tide
-  :disabled t  ;; I don't seem to use it
+  :disabled t  ;; use LSP
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)

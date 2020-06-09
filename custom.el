@@ -58,7 +58,6 @@
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
  '(org-agenda-skip-scheduled-if-done t)
- '(org-archive-location (my/org-path "archive.org::datetree/* %s"))
  '(org-catch-invisible-edits (quote show))
  '(org-clock-auto-clock-resolution (quote when-no-clock-is-running))
  '(org-clock-clocktable-default-properties (quote (:maxlevel 2 :scope agenda :block lastmonth)))
@@ -103,7 +102,7 @@
      ("MELPA" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (tj3-mode kivy-mode jinja2-mode gherkin-mode blacken prettier-js rjsx-mode htmlize elpy powerthesaurus neotree minimap company-lsp lsp-ui lsp-mode lsp-docker docker org-velocity god-mode diminish activity-watch-mode projectile writegood-mode magit which-key doom-modeline all-the-icons auto-package-update use-package)))
+    (magit docker-compose-mode dockerfile-mode tj3-mode kivy-mode jinja2-mode gherkin-mode blacken prettier-js rjsx-mode htmlize elpy powerthesaurus neotree minimap company-lsp lsp-ui lsp-mode lsp-docker docker org-velocity god-mode diminish activity-watch-mode projectile writegood-mode which-key doom-modeline all-the-icons auto-package-update use-package)))
  '(require-final-newline t)
  '(ring-bell-function (quote ignore))
  '(save-place-mode t)

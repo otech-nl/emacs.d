@@ -25,6 +25,7 @@
                   (indent-according-to-mode)))
 
 (global-set-key (kbd "C-c b") 'eval-buffer)
+(global-set-key (kbd "C-c D") 'docker)
 (global-set-key (kbd "C-c d")  ; duplicate line
                 (lambda () (interactive)
                   (save-excursion

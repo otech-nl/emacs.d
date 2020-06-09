@@ -10,10 +10,10 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
+(package-refresh-contents)
 
 ;; bootstrap use-package (https://github.com/jwiegley/use-package)
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
