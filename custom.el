@@ -90,8 +90,6 @@
    '(("ELPA" . "https://elpa.gnu.org/packages/")
      ("MELPA-stable" . "https://stable.melpa.org/packages/")
      ("MELPA" . "https://melpa.org/packages/")))
- '(package-selected-packages
-   '(lsp-python-ms deft writegood-mode org-roam htmlize typescript-mode rjsx-mode projectile prettier-js magit lsp-ui lsp-mode jinja2-mode gherkin-mode dockerfile-mode docker-compose-mode docker blacken which-key powerthesaurus neotree minimap god-mode doom-modeline diminish all-the-icons auto-package-update use-package))
  '(require-final-newline t)
  '(ring-bell-function 'ignore)
  '(save-place-mode t)

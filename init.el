@@ -9,7 +9,7 @@
 (let ((config-files
        (mapcar
         (lambda (f) (expand-file-name (concat f ".el") user-emacs-directory))
-        (list "custom" "hooks" "me" "packages" "mail" "dev" "org-cfg" "keys"))))
+        (list "custom" "hooks" "me" "packages" "dev" "org-cfg" "keys"))))
   ;; keep custom file separate
   (setq custom-file (car config-files))
   ;; load config files
@@ -36,3 +36,4 @@
 
 (provide 'init)
 ;;; init.el ends here
+(put 'dired-find-alternate-file 'disabled nil)

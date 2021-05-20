@@ -103,22 +103,6 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
                 deft-extensions '("md" "org")
                 deft-default-extension "org"))
 
-;; auto capitalization
-;; https://elpa.gnu.org/packages/captain.html
-(use-package captain
-  :disabled t  ;; I don't think I use it
-  :config
-  (add-hook
-   'org-mode-hook
-   (lambda ()
-     (setq captain-predicate (lambda () (not (org-in-src-block-p)))))))
-
-;; analyse prose for readability
-;; https://github.com/zzkt/smog
-(use-package smog
-  :disabled t  ;; not actionable
-  :config (setq smog-command "style -L en -p"))
-
 ;; find common writing problems
 ;; https://github.com/bnbeckwith/writegood-mode
 (use-package writegood-mode
