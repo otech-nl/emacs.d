@@ -9,7 +9,7 @@
 (let ((config-files
        (mapcar
         (lambda (f) (expand-file-name (concat f ".el") user-emacs-directory))
-        (list "custom" "hooks" "me" "packages" "mail" "dev" "org-cfg" "keys" "contrib/org-velocity"))))
+        (list "custom" "hooks" "me" "packages" "mail" "dev" "org-cfg" "keys"))))
   ;; keep custom file separate
   (setq custom-file (car config-files))
   ;; load config files
@@ -30,6 +30,9 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(put 'narrow-to-region 'disabled nil)
+
+(find-file (my/org-path "notes.org"))
+
 (provide 'init)
 ;;; init.el ends here
-(put 'narrow-to-region 'disabled nil)

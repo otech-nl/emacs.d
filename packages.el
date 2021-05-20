@@ -30,6 +30,7 @@
 
 (use-package activity-watch-mode
   :config
+  :disabled t
   (global-activity-watch-mode))
 
 ;; silversearcher (https://agel.readthedocs.io/, https://geoff.greer.fm/ag/)
@@ -52,7 +53,9 @@
   )
 
 ;; complete anything (https://company-mode.github.io/)
-(use-package company)
+(use-package company
+  :disabled t  ;; annoying
+  :hook (after-init-hook . global-company-mode))
 
 ;; counsel adds suggestions in the minibuffer with M-o
 ;; swiper replaces isearch

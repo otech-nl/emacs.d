@@ -24,3 +24,5 @@ tramp
 transient/
 tutorial
 url/cookies
+/org-roam.db
+/ido.last

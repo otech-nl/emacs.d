@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;; https://orgmode.org/
 (use-package org
   :ensure htmlize
   :config
@@ -43,7 +44,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
 :END:
 ")
           ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
-          ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
+          ;; ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
           ("m" "meeting" entry (file org-default-notes-file) "* %U: %?               :meeting:\nWith:\n\n")
           ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
            :prepend t
@@ -62,6 +63,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
          ("\C-c c" . org-capture)
          ("\C-c l" . org-store-link)))
 
+;; https://www.emacswiki.org/emacs/AutoInsertMode
 (use-package autoinsert
   :config
   (setq auto-insert-query nil)
@@ -76,6 +78,33 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
       \n
       )))
 
+;; Zettelkasten in Org
+;; https://www.orgroam.com/manual.html
+(use-package org-roam
+  :after org
+  :config
+  (setq org-roam-db-update-method 'immediate)
+  :hook
+  ((org-mode . org-roam-mode))  ;; could also be from after-init-hook
+  :custom
+  (org-roam-directory (my/org-path "roam"))
+  (org-roam-capture-templates
+   '(("d" "default" plain (function org-roam--capture-get-point)
+      "%?"
+      :file-name "%<%Y-%m-%d-%H%M%S>-${slug}"
+      :head "#+ROAM_TAGS: \n#+ROAM_ALIAS: \n"
+      :unnarrowed t)))
+)
+
+;; use deft to search Zettels: https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-Deft
+(use-package deft
+  :after org-roam
+  :config (setq deft-directory org-roam-directory
+                deft-extensions '("md" "org")
+                deft-default-extension "org"))
+
+;; auto capitalization
+;; https://elpa.gnu.org/packages/captain.html
 (use-package captain
   :disabled t  ;; I don't think I use it
   :config
@@ -84,10 +113,13 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
    (lambda ()
      (setq captain-predicate (lambda () (not (org-in-src-block-p)))))))
 
+;; analyse prose for readability
+;; https://github.com/zzkt/smog
 (use-package smog
-  :disabled t  ;; not acionable
+  :disabled t  ;; not actionable
   :config (setq smog-command "style -L en -p"))
 
+;; find common writing problems
 ;; https://github.com/bnbeckwith/writegood-mode
 (use-package writegood-mode
   :commands writegood-mode

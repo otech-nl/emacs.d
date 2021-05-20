@@ -72,6 +72,19 @@
              (set-face-background 'mode-line me/mode-line-background)
              (set-face-background 'mode-line-inactive me/mode-line-background-inactive)))))
 
+(defun me/org-show-just-me (&rest _)
+  "Fold all other trees, then show entire current subtree."
+  (interactive)
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree))
+
+(defun me/switch-to-minibuffer ()
+  "switch to minibuffer window (if active)"
+  (interactive)
+  (when (active-minibuffer-window)
+    (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+    (select-window (active-minibuffer-window))))
 
 (provide 'me)
 ;;; me.el ends here

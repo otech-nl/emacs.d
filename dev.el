@@ -1,9 +1,11 @@
-;;; filetypes --- support for specific file types
+;;; dev --- support for software development
 
 ;;; Commentary:
 
 ;;; Code:
 
+;; The Uncompromising Python Code Formatter
+;; https://github.com/psf/black
 (use-package blacken
   :config
   (add-hook 'python-mode-hook 'blacken-mode))
@@ -19,6 +21,7 @@
 (use-package jinja2-mode
   :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
 
+;; language server protocol
 ;; https://github.com/emacs-lsp/lsp-mode
 (use-package lsp-mode
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
@@ -38,15 +41,25 @@
         lsp-ui-flycheck-enable t))
 
 (use-package company-lsp
+  :disabled t  ;; no longer needed/supported, it seems (https://github.com/melpa/melpa/issues/7461)
   :requires company
   :commands company-lsp
   :config (push 'company-lsp company-backends))
+
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))  ; or lsp-deferred
 
 ;; optionally if you want to use debugger
 ;; (use-package dap-mode)
 ;; (use-package dap-python)
 ;; (use-package dap-javascript)
 
+;; A Git Porcelain inside Emacs
+;; https://magit.vc/
 (use-package magit
   :bind ("C-x g" . magit-status))
 
@@ -64,7 +77,8 @@
   (add-hook 'typescript-mode-hook 'prettier-js-mode)
 )
 
-;; project interaction (https://docs.projectile.mx/)
+;; project interaction
+;; https://docs.projectile.mx/
 (use-package projectile
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -102,5 +116,5 @@
   :disabled t  ;; trying LSP
   )
 
-(provide 'filetypes)
-;;; filetypes.el ends here
+(provide 'dev)
+;;; dev.el ends here
