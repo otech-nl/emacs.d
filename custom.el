@@ -85,11 +85,6 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "ACTIVE(a)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)")))
  '(org-use-speed-commands t)
- '(package-archive-priorities '(("ELPA" . 10) ("MELPA" . 5) ("MELPA-stable" . 0)))
- '(package-archives
-   '(("ELPA" . "https://elpa.gnu.org/packages/")
-     ("MELPA-stable" . "https://stable.melpa.org/packages/")
-     ("MELPA" . "https://melpa.org/packages/")))
  '(require-final-newline t)
  '(ring-bell-function 'ignore)
  '(save-place-mode t)

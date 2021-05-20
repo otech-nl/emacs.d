@@ -15,8 +15,7 @@
 (use-package dockerfile-mode
   :mode "^Dockerfile$")
 
-(use-package gherkin-mode
-  :defer t)
+(use-package gherkin-mode)
 
 (use-package jinja2-mode
   :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
@@ -44,7 +43,7 @@
   :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
-                          (lsp))))  ; or lsp-deferred
+                          (lsp))))
 
 ;; A Git Porcelain inside Emacs
 ;; https://magit.vc/
@@ -57,9 +56,11 @@
 
 (use-package prettier-js
   :init
+  (add-hook 'js-mode-hook 'prettier-js-mode)
   (add-hook 'json-mode-hook 'prettier-js-mode)
   (add-hook 'typescript-mode-hook 'prettier-js-mode)
-)
+  )
+
 (use-package whitespace
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))

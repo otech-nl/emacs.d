@@ -19,6 +19,7 @@
                   (forward-line 1) (transpose-lines 1) (forward-line -1)
                   (indent-according-to-mode)))
 
+(global-set-key (kbd "C-c a") 'apt-utils-search)
 (global-set-key (kbd "C-c b") 'eval-buffer)
 (global-set-key (kbd "C-c D") 'docker)
 (global-set-key (kbd "C-c d")  ; duplicate line

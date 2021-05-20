@@ -7,7 +7,7 @@
 
 ;; https://orgmode.org/
 (use-package org
-  :ensure htmlize
+  :requires htmlize
   :config
   (add-hook 'org-mode-hook 'org-indent-mode)
   (org-clock-persistence-insinuate)

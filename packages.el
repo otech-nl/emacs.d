@@ -5,31 +5,31 @@
 
 ;;; Code:
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-(package-refresh-contents)
+;; bootstrap straight (https://github.com/raxod502/straight.el)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; bootstrap use-package (https://github.com/jwiegley/use-package)
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
-(setq use-package-always-ensure t
-      use-package-always-defer nil)
-
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t
-        auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t) ; replace use-package with straight-use-package
 
 ;; actual packages
 
 ;; pretty icons (needed by several other packages)
 (use-package all-the-icons)
+
+;; complete anything (https://company-mode.github.io/)
+(use-package company
+  :hook (after-init-hook . global-company-mode))
 
 (use-package diminish)
 
@@ -53,6 +53,14 @@
   :diminish which-key-mode
   :config
   (which-key-mode))
+
+(use-package apt-utils
+  :straight (apt-utils
+             :type git
+             :host github
+             :repo "emacsmirror/emacswiki.org"
+             :branch "master"
+             :files ("apt-utils.el")))
 
 (provide 'packages)
 ;;; packages.el ends here
