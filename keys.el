@@ -30,8 +30,9 @@
 (global-set-key (kbd "C-c e") 'speedbar)
 (global-set-key (kbd "C-c f") 'format-all-buffer)
 (global-set-key (kbd "C-c g") 'grep)
+;; (global-set-key (kbd "C-c h") RESERVED FOR LSP
 ;; (global-set-key (kbd "C-c g") 'gnus)
-(global-set-key (kbd "C-c i") (lambda () (interactive) (me/find-file "~/.emacs.d/")))
+(global-set-key (kbd "C-c i") (lambda () (interactive) (steets/find-file "~/.emacs.d/")))
 (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
 (global-set-key (kbd "C-c l") 'package-list-packages)
 ;; (global-set-key (kbd "C-c l") 'display-line-numbers-mode)
@@ -39,10 +40,10 @@
 (global-set-key (kbd "C-c m") 'compile)
 (global-set-key (kbd "C-c n") 'neotree-toggle)
 (global-set-key (kbd "C-c o b") (lambda () (interactive) (find-file "~/src/dwim/posts/index.org")))
-(global-set-key (kbd "C-c o c") 'me/org-show-just-me) ;; center
+(global-set-key (kbd "C-c o c") 'steets/org-show-just-me) ;; center
 (global-set-key (kbd "C-c o d") 'deft)
 (global-set-key (kbd "C-c o e") 'org-entities-help)
-(global-set-key (kbd "C-c o f") (lambda () (interactive) (me/find-file org-directory)))
+(global-set-key (kbd "C-c o f") (lambda () (interactive) (steets/find-file org-directory)))
 (global-set-key (kbd "C-c o i") (lambda () (interactive) (org-clock-in '(4))))
 (global-set-key (kbd "C-c o j") 'org-clock-goto)
 (global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file (my/org-path "notes.org"))))
@@ -58,7 +59,7 @@
                     (goto-char (point-min))
                     (while (search-forward "" nil t) (replace-match "")))))
 (global-set-key (kbd "C-c v") 'insert-char)
-(global-set-key (kbd "C-c w") 'powerthesaurus-lookup-word-dwim)
+(global-set-key (kbd "C-c w") 'count-words)
 (global-set-key (kbd "C-c z /") #'deft)
 (global-set-key (kbd "C-c z b") #'org-roam-switch-to-buffer)
 (global-set-key (kbd "C-c z c") #'org-roam-capture)

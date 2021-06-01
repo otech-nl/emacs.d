@@ -37,13 +37,14 @@
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-position 'at-point
-        lsp-ui-flycheck-enable t))
+        lsp-ui-flycheck-enable t
+        lsp-python-ms-executable "~/.local/share/virtualenvs/.emacs.d-Qr0izAws/bin/pylsp"))
 
 (use-package lsp-python-ms
   :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp))))
+                         (require 'lsp-python-ms)
+                         (lsp))))
 
 ;; A Git Porcelain inside Emacs
 ;; https://magit.vc/
@@ -58,8 +59,7 @@
   :init
   (add-hook 'js-mode-hook 'prettier-js-mode)
   (add-hook 'json-mode-hook 'prettier-js-mode)
-  (add-hook 'typescript-mode-hook 'prettier-js-mode)
-  )
+  (add-hook 'typescript-mode-hook 'prettier-js-mode))
 
 (use-package whitespace
   :init

@@ -11,6 +11,7 @@
   :config
   (add-hook 'org-mode-hook 'org-indent-mode)
   (org-clock-persistence-insinuate)
+
   (setq org-agenda-custom-commands
         '(("h" "TODOs history of closed tasks"
            todo "DONE|CANCELLED|DEFERRED"

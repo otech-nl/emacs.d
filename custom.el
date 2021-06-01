@@ -30,6 +30,7 @@
  '(default-directory "~/src/" t)
  '(delete-by-moving-to-trash t)
  '(delete-selection-mode t)
+ '(dired-dwim-target 'dired-dwim-target-next-visible)
  '(dired-listing-switches "-ahl")
  '(display-time-24hr-format t)
  '(electric-pair-mode t)
@@ -43,6 +44,7 @@
  '(global-auto-revert-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(js-indent-level 2)
  '(kill-whole-line t)
  '(load-prefer-newer t)
  '(midnight-mode t)
@@ -98,6 +100,7 @@
  '(visible-bell t)
  '(whitespace-line-column 100)
  '(whitespace-style '(trailing lines-tail empty indentation::space)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

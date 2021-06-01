@@ -22,6 +22,9 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t) ; replace use-package with straight-use-package
 
+;; needed to get LSP right
+(straight-pull-package 'melpa)
+
 ;; actual packages
 
 ;; pretty icons (needed by several other packages)

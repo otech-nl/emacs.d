@@ -22,6 +22,10 @@
               (goto-line 15)
               (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
                   (ispell-change-dictionary (match-string 1))))))
+;(add-hook 'c++-mode-hook
+;  (lambda ()
+;    (add-hook (make-local-variable 'before-save-hook)
+;              'steets/astyle-this-buffer)))
 
 (provide 'hooks)
 ;;; hooks.el ends here
