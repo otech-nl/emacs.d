@@ -4,11 +4,6 @@
 ;; anything you can customize
 
 ;;; Code:
-(setq my/org-dir (cond ((eq system-type 'gnu/linux) "~/Dropbox/org/")
-                       ((eq system-type 'windows-nt) "S:/org/" "")
-                       ((eq system-type 'cygwin) "/cygdrive/s/org/" "")))
-
-(defun my/org-path (path) (concat my/org-dir path))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -25,7 +20,7 @@
  '(compilation-scroll-output 'first-error)
  '(completion-ignored-extensions
    (append completion-ignored-extensions
-           '("-lock.json" ".pyc")))
+	   '("-lock.json" ".pyc")))
  '(create-lockfiles nil)
  '(custom-enabled-themes '(misterioso))
  '(default-directory "~/src/" t)
@@ -38,10 +33,10 @@
  '(frame-title-format
    '((:eval
       (if
-          (buffer-file-name)
-          (abbreviate-file-name
-           (buffer-file-name))
-        "%b"))) t)
+	  (buffer-file-name)
+	  (abbreviate-file-name
+	   (buffer-file-name))
+	"%b"))) t)
  '(fringe-mode '(1 . 1) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -65,9 +60,9 @@
  '(org-clock-persist-query-resume nil)
  '(org-clock-report-include-clocking-task t)
  '(org-columns t)
- '(org-default-notes-file (my/org-path "notes.org"))
+ '(org-default-notes-file (steets/org-path "notes.org"))
  '(org-default-priority 67)
- '(org-directory my/org-dir)
+ '(org-directory steets/org-dir)
  '(org-duration-format '((special . h:mm)))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
@@ -76,8 +71,8 @@
  '(org-hide-leading-stars t)
  '(org-log-done 'time)
  '(org-log-into-drawer t)
- '(org-mobile-directory my/org-dir)
- '(org-mobile-inbox-for-pull (my/org-path "refile.org"))
+ '(org-mobile-directory steets/org-dir)
+ '(org-mobile-inbox-for-pull (steets/org-path "refile.org"))
  '(org-modules '(org-mouse))
  '(org-pretty-entities t)
  '(org-publish-project-alist nil)
