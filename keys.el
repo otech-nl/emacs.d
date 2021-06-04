@@ -21,6 +21,7 @@
 
 (global-set-key (kbd "C-c a") 'apt-utils-search)
 (global-set-key (kbd "C-c b") 'eval-buffer)
+(global-set-key (kbd "C-c c") 'customize-variable)
 (global-set-key (kbd "C-c D") 'docker)
 (global-set-key (kbd "C-c d")  ; duplicate line
                 (lambda () (interactive)

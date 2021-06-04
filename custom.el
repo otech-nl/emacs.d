@@ -20,6 +20,7 @@
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
+ '(blink-cursor-blinks 0)
  '(column-number-mode t)
  '(compilation-scroll-output 'first-error)
  '(completion-ignored-extensions
@@ -41,7 +42,9 @@
           (abbreviate-file-name
            (buffer-file-name))
         "%b"))) t)
+ '(fringe-mode '(1 . 1) nil (fringe))
  '(global-auto-revert-mode t)
+ '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
@@ -94,6 +97,7 @@
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tab-always-indent 'complete)
+ '(tab-width 2)
  '(tool-bar-mode nil)
  '(user-full-name "René Steetskamp")
  '(user-mail-address "steets@otech.nl")

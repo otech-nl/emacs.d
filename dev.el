@@ -26,19 +26,26 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   :init (setq lsp-keymap-prefix "C-c h")
   :hook ((python-mode . lsp)
+         (bash-mode . lsp)
+         (dockerfile-mode . lsp)
          (c-mode . lsp)
          (c++-mode . lsp)
          (js-mode . lsp)
+         (json-mode . lsp)
          (typescript-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
+  :config
+  (setq lsp-python-ms-executable "~/.local/share/virtualenvs/.emacs.d-Qr0izAws/bin/pylsp")
   :commands lsp)
 
+;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-doc-position 'at-point
-        lsp-ui-flycheck-enable t
-        lsp-python-ms-executable "~/.local/share/virtualenvs/.emacs.d-Qr0izAws/bin/pylsp"))
+        lsp-ui-doc-show-with-cursor nil
+        lsp-lens-enable nil
+        lsp-ui-flycheck-enable t))
 
 (use-package lsp-python-ms
   :init (setq lsp-python-ms-auto-install-server t)
@@ -55,11 +62,11 @@
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
 
-(use-package prettier-js
-  :init
-  (add-hook 'js-mode-hook 'prettier-js-mode)
-  (add-hook 'json-mode-hook 'prettier-js-mode)
-  (add-hook 'typescript-mode-hook 'prettier-js-mode))
+;; (use-package prettier-js
+;;   :init
+;;   (add-hook 'js-mode-hook 'prettier-js-mode)
+;;   (add-hook 'json-mode-hook 'prettier-js-mode)
+;;   (add-hook 'typescript-mode-hook 'prettier-js-mode))
 
 (use-package whitespace
   :init

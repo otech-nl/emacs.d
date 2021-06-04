@@ -19,8 +19,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; https://github.com/jwiegley/use-package
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t) ; replace use-package with straight-use-package
+
+;; Use the :init keyword to execute code before a package is loaded.
+;; :config can be used to execute code after a package is loaded.
 
 ;; needed to get LSP right
 (straight-pull-package 'melpa)
@@ -37,7 +41,9 @@
 (use-package diminish)
 
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-mode))
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-unicode-fallback t))
 
 ;; spell checking text modes and code comments
 (use-package flyspell
@@ -57,13 +63,6 @@
   :config
   (which-key-mode))
 
-(use-package apt-utils
-  :straight (apt-utils
-             :type git
-             :host github
-             :repo "emacsmirror/emacswiki.org"
-             :branch "master"
-             :files ("apt-utils.el")))
 
 (provide 'packages)
 ;;; packages.el ends here
