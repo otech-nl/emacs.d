@@ -2,6 +2,57 @@
 #+DATE: 2021-06-04
 #+LANGUAGE: en
 
+
+* Background
+
+In the early 1990s I was introduced to Emacs. Since then, I tend to bounce between Emacs and other editors (VS Code, Sublime, ...). But currently I am on an Emacs-streak of 5+ years. When I use Emacs I tend to grow my config until it feels too big. An then I start over.
+
+So, here it is. I’ll be working with this for a while.
+
+** Considerations
+
+I use Emacs mostly professionally, mostly for coding (JS, Python, C/C++) projects (org-mode).
+
+With this configuration, I try to stick to the following guidelines:
+- stick to vanilla Emacs as much as possible
+- only add a package when it actually adds value
+- resist the urge to tinker
+
+***  Essentials
+
+I would not want to do without:
+1. [[Bootstrap][use-package]]
+2. [[Org-mode]]
+3. [[Language server protocol][lsp-mode]]
+4. [[Version control][Magit]]
+
+*** Dilemmas
+
+Do I place [[Key bindings][key bindings]] together in a central location, or do I put them with other related settings? The former gives a good overview of all key bindings, while the latter groups related settings. Either is fine (or equally uncomfortable) with me, as long as it is applied consistently.
+
+The same goes for [[Customization][customizations]].
+
+In both cases I choose a central location.
+
+** History
+
+- 2021 :: Move to literate config file (embedded in org-file)
+
+- 2020 :: Back with a fresh start.
+
+- 2019 :: Trying to go back to (mostly) vanilla Emacs, with minimal config.
+
+- 2018 :: Back to a custom config, using [[https://github.com/jwiegley/use-package][use-package]].
+
+- 2017 :: Prelude
+  I decided to give Prelude a go. This is the contents of my ~personal~ directory.
+
+  After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.
+
+** Convention
+
+Names of functions and variables that I added are preceded by "/steets//".
+
 * Where are we?
 
 I run Emacs on different systems and platforms. And I like this config to work out of the box on all of them. So:
@@ -27,7 +78,7 @@ I prefer to use the customize interface whenever possible and store customizatio
   (load custom-file)
 #+END_SRC
 
-I am aware that this means that I can't keep customizations with their packages. It's just one of those dilemmas.
+I am aware that this means that I can't keep customizations with their packages. It's just one of those [[Dilemmas][dilemmas]].
 
 * Packages
 
@@ -51,7 +102,9 @@ I am aware that this means that I can't keep customizations with their packages.
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 
-Replace [[https://github.com/jwiegley/use-package][use-package]] with straight-use-package:
+Straight does not automatically update packages. To do this manually, run =(straight-pull-all)=.
+
+Replace [[https://github.com/jwiegley/use-package][use-package]] with =straight-use-package=:
 
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'use-package)
@@ -59,8 +112,8 @@ Replace [[https://github.com/jwiegley/use-package][use-package]] with straight-u
 #+END_SRC
 
 Reminder:
-- Use the =:init= keyword to execute code before a package is loaded.
-- =:config= can be used to execute code after a package is loaded.
+- Use the =:init= keyword to execute code /before/ a package is loaded.
+- =:config= can be used to execute code /after/ a package is loaded.
 
 The line below is needed to get LSP right:
 
@@ -68,7 +121,7 @@ The line below is needed to get LSP right:
   (straight-pull-package 'melpa)
 #+END_SRC
 
-** General purpose packages
+** Usability
 
 Get some pretty [[https://github.com/domtronn/all-the-icons.el][icons]] that are needed by several other packages:
 
@@ -83,7 +136,7 @@ Get some pretty [[https://github.com/domtronn/all-the-icons.el][icons]] that are
     :hook (after-init-hook . global-company-mode))
 #+END_SRC
 
-Keep the mode line clean by hiding minor-modes with [[https://github.com/emacsmirror/diminish][diminish]]:
+Keep the mode line clean by hiding minor-modes with [[https://github.com/emacsmirror/diminish][diminish]] (used by [[Bootstrap][use-package]]):
 
 #+BEGIN_SRC emacs-lisp
   (use-package diminish)
@@ -109,9 +162,9 @@ Help to learn key bindings by [[https://github.com/justbur/emacs-which-key][sugg
 
 ** Development
 
-*** Language server protocol ([[https://langserver.org/][LSP]])
+*** Language server protocol
 
-Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programming languages:
+Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programming languages ([[https://langserver.org/][LSP]]):
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
@@ -195,7 +248,7 @@ Add modes that Emacs doesn't support out of the box.
 
 ** Text processing
 
-On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html][spell checking]] text modes and code comments:
+On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html][spell checking]] for text modes and code comments:
 
 #+BEGIN_SRC emacs-lisp
   (use-package flyspell
@@ -211,7 +264,7 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
     (define-key flyspell-mouse-map [mouse-3] #'undefined))
 #+END_SRC
 
-[[https://github.com/bnbeckwith/writegood-mode][Writegood]]: Find common writing problems
+[[https://github.com/bnbeckwith/writegood-mode][Writegood]] to find common writing problems:
 
 #+BEGIN_SRC emacs-lisp
   (use-package writegood-mode
@@ -227,7 +280,21 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :requires htmlize
-    :hook (org-mode-hook . org-indent-mode)
+    :hook
+    ((org-mode-hook . org-indent-mode)
+     (org-mode-hook .
+          (lambda ()
+            ;; file modification date
+            (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
+            (set (make-local-variable 'time-stamp-start) "^#\\+DATE: +")
+            (set (make-local-variable 'time-stamp-end) "$")
+
+            ;; Switch language for Org file, if a `#+LANGUAGE:' meta-tag is on top 14 lines.
+            (save-excursion
+              (goto-line 15)
+              (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
+                  (ispell-change-dictionary (match-string 1))))))
+     )
     :config
     (org-clock-persistence-insinuate)
 
@@ -367,12 +434,6 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
                  (message (format "%s: %d" key val)))
                table)))
 
-  (setq steets/root-dir
-        (pcase system-type
-          ("windows-nt" "S:\\")
-          ("cygwin" "/s/")
-          (code "~/src/")
-          ))
 
   (defun steets/path-join (root &rest dirs)
     "like Python's os.path.join"
@@ -381,15 +442,12 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
              (expand-file-name (car dirs) root)
              (cdr dirs))))
 
-  ;; (defun steets/org-file (name)
-  ;;   "Return path to org file"
-  ;;   (steets/path-join steets/root-dir "org" (concat name ".org")))
-
 
   (defun steets/find-file(directory)
     "Find a file in DIRECTORY"
     (interactive)
     (find-file (read-file-name "Find file: " directory)))
+
 
   (defun steets/god-mode-line ()
     "Change mode line in God mode "
@@ -401,12 +459,14 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
                (set-face-background 'mode-line steets/mode-line-background)
                (set-face-background 'mode-line-inactive steets/mode-line-background-inactive)))))
 
+
   (defun steets/org-show-just-me (&rest _)
     "Fold all other trees, then show entire current subtree."
     (interactive)
     (org-overview)
     (org-reveal)
     (org-show-subtree))
+
 
   (defun steets/switch-to-minibuffer ()
     "switch to minibuffer window (if active)"
@@ -418,7 +478,7 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
 
 * Key bindings
 
-I like to keep all my key bindings in one place. This means I cannot keep them with related configuration, but that's just one of the dilemmas.
+I like to keep all my key bindings in one place. This means I cannot keep them with related configuration, but that's just one of the [[Dilemmas][dilemmas]].
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-<tab>") 'next-buffer)
@@ -435,7 +495,7 @@ I like to keep all my key bindings in one place. This means I cannot keep them w
                     (indent-according-to-mode)))
 #+END_SRC
 
-convention: C-c <letter> for user keys:
+The accepted convention is to use =C-c <letter>= for user key bindings:
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c b") 'eval-buffer)
@@ -459,6 +519,7 @@ convention: C-c <letter> for user keys:
   (global-set-key (kbd "C-c o e") 'org-entities-help)
   (global-set-key (kbd "C-c o f") (lambda () (interactive) (steets/find-file org-directory)))
   (global-set-key (kbd "C-c o j") 'org-clock-goto)
+  (global-set-key (kbd "C-c o l") 'org-insert-link)
   (global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file (steets/org-path "notes.org"))))
   (global-set-key (kbd "C-c s") 'sort-lines)
   (global-set-key (kbd "C-c S") 'window-swap-states)
@@ -491,6 +552,8 @@ Overrides:
 
 * Hooks
 
+General hooks that are not related to packages:
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
   (add-hook 'text-mode-hook 'visual-line-mode)
@@ -498,18 +561,6 @@ Overrides:
   (add-hook 'prog-mode-hook 'outline-minor-mode)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p)
-  (add-hook 'org-mode-hook
-            (lambda ()
-              ;; file modification date
-              (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
-              (set (make-local-variable 'time-stamp-start) "^#\\+DATE: +")
-              (set (make-local-variable 'time-stamp-end) "$")
-
-              ;; Switch language for Org file, if a `#+LANGUAGE:' meta-tag is on top 14 lines.
-              (save-excursion
-                (goto-line 15)
-                (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
-                    (ispell-change-dictionary (match-string 1))))))
 #+END_SRC
 
 * Final tweaks
@@ -536,7 +587,7 @@ Space to try out new stuff.
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
-    :init (global-git-gutter-mode))
+    :config (global-git-gutter-mode))
 #+END_SRC
 
 [[https://github.com/lassik/emacs-format-all-the-code][format-all]] for standard formatting when saving source code. See also =astylerc=.
@@ -550,7 +601,7 @@ Space to try out new stuff.
 
 [[https://github.com/creichert/ido-vertical-mode.el][ido-vertical-mode]] to make [[https://www.gnu.org/software/emacs/manual/html_mono/ido.html][IDO]] more to my taste:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package ido-vertical-mode
     :init
     (ido-mode 1)
@@ -564,19 +615,38 @@ I like my current line to be visible, including syntax highlighting:
   (set-face-attribute 'hl-line nil :inherit nil :background "grey25")
 #+END_SRC
 
+* Wishlist
+
+[[https://github.com/emacs-tw/awesome-emacs][Stuff to try]]:
+
+- https://github.com/jwiegley/emacs-async
+- https://github.com/magnars/multiple-cursors.el
+- https://github.com/realgud
+- https://gitlab.com/jabranham/system-packages provides basic access to system package manager, but no gui
+- https://github.com/pashky/restclient.el
+
 * Graveyard
 :PROPERTIES:
-:header-args: :tangle no :collapse yes
+:header-args: :tangle no
 :END:
 
 Rejected configuration.
+
+- Could not get to work:
+  - [[https://github.com/dgutov/diff-hl][diff-hl]] (Git-gutter does work).
+  - https://github.com/sheijk/hideshowvis
+  - [[https://github.com/tarsius/keycast][keycast]] does not [[https://github.com/seagle0128/doom-modeline/issues/122][work]] well with doom-modeline
+- minibuffer completion
+  - https://github.com/minad/vertico
+  - https://github.com/raxod502/selectrum#selectrum-in-comparison-to-other-completion-systems
+- https://github.com/atykhonov/google-translate
 
 #+BEGIN_SRC emacs-lisp
   ;; The Uncompromising Python Code Formatter
   ;; https://github.com/psf/black
   (use-package blacken
     :config
-    (add-hook 'python-mode-hook 'blacken-mode))
+    :hook (python-mode-hook . blacken-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -593,32 +663,3 @@ Rejected configuration.
                :branch "master"
                :files ("apt-utils.el")))
 #+END_SRC
-
-* History
-
-I tend to bounce between Emacs and other editors (VS Code, Sublime, ...).
-When I am using Emacs I tend to grow my config until it feels too big. An then I start over.
-
-So, here it is. I’ll be working with this for a while.
-
-** 2021
-
-Move to literate config file (embedded in org-file)
-
-** 2020
-
-Back with a fresh start.
-
-** 2019
-
-Trying to go back to (mostly) vanilla Emacs, with minimal config.
-
-** 2018
-
-Back to a custom config, using [[https://github.com/jwiegley/use-package][use-package]].
-
-** 2017: Prelude
-
-I decided to give Prelude a go. This is the contents of my ~personal~ directory.
-
-After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.
