@@ -20,7 +20,7 @@
  '(compilation-scroll-output 'first-error)
  '(completion-ignored-extensions
    (append completion-ignored-extensions
-	   '("-lock.json" ".pyc")))
+           '("-lock.json" ".pyc")))
  '(create-lockfiles nil)
  '(custom-enabled-themes '(misterioso))
  '(default-directory "~/src/" t)
@@ -33,10 +33,10 @@
  '(frame-title-format
    '((:eval
       (if
-	  (buffer-file-name)
-	  (abbreviate-file-name
-	   (buffer-file-name))
-	"%b"))) t)
+          (buffer-file-name)
+          (abbreviate-file-name
+           (buffer-file-name))
+        "%b"))) t)
  '(fringe-mode '(1 . 1) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -46,7 +46,7 @@
  '(kill-whole-line t)
  '(load-prefer-newer t)
  '(midnight-mode t)
- '(org-agenda-files '("~/Dropbox/org/notes.org"))
+ '(org-agenda-files (steets/org-path "notes.org"))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
  '(org-agenda-skip-scheduled-if-done t)
@@ -61,11 +61,8 @@
  '(org-clock-report-include-clocking-task t)
  '(org-columns t)
  '(org-default-notes-file (steets/org-path "notes.org"))
- '(org-default-priority 67)
  '(org-directory steets/org-dir)
  '(org-duration-format '((special . h:mm)))
- '(org-enforce-todo-checkbox-dependencies t)
- '(org-enforce-todo-dependencies t)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-hide-emphasis-markers t)
  '(org-hide-leading-stars t)
@@ -75,6 +72,7 @@
  '(org-mobile-inbox-for-pull (steets/org-path "refile.org"))
  '(org-modules '(org-mouse))
  '(org-pretty-entities t)
+ '(org-priority-default 67)
  '(org-publish-project-alist nil)
  '(org-refile-targets '((org-agenda-files :level . 2)))
  '(org-refile-use-outline-path nil)
@@ -87,6 +85,7 @@
  '(org-use-speed-commands t)
  '(require-final-newline t)
  '(ring-bell-function 'ignore)
+ '(safe-local-variable-values '((flycheck-disabled-checkers emacs-lisp-checkdoc)))
  '(save-place-mode t)
  '(savehist-mode t)
  '(show-paren-mode t)
