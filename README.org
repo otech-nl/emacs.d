@@ -1,1 +1,613 @@
 #+TITLE: My Emacs configuration
+#+DATE: 2021-06-04
+#+LANGUAGE: en
+
+* Where are we?
+
+I run Emacs on different systems and platforms. And I like this config to work out of the box on all of them. So:
+- I sync my org files through Dropbox
+- we need to set some platform-dependent paths
+
+#+BEGIN_SRC emacs-lisp
+  (setq steets/org-dir (cond ((eq system-type 'gnu/linux) "~/Dropbox/org/")
+       ((eq system-type 'windows-nt) "S:/org/" "")
+       ((eq system-type 'cygwin) "/cygdrive/s/org/" "")))
+
+  (defun steets/org-path (path)
+    "Return a path to an org file"
+    (concat steets/org-dir path))
+#+END_SRC
+
+* Customization
+
+I prefer to use the customize interface whenever possible and store customizations in a separate [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][file]]:
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
+#+END_SRC
+
+I am aware that this means that I can't keep customizations with their packages. It's just one of those dilemmas.
+
+* Packages
+
+** Bootstrap [[https://github.com/raxod502/straight.el][straight]
+
+#+BEGIN_SRC emacs-lisp
+  (defvar bootstrap-version)
+
+  (let ((bootstrap-file
+   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+  (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+    (url-retrieve-synchronously
+     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+     'silent 'inhibit-cookies)
+  (goto-char (point-max))
+  (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+END_SRC
+
+Use [[https://github.com/jwiegley/use-package][use-package]] to do the heavy lifting:
+
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t) ; replace use-package with straight-use-package
+#+END_SRC
+
+Reminder:
+- Use the =:init= keyword to execute code before a package is loaded.
+- =:config= can be used to execute code after a package is loaded.
+
+The line below is needed to get LSP right:
+
+#+BEGIN_SRC emacs-lisp
+(straight-pull-package 'melpa)
+#+END_SRC
+
+** General purpose packages
+
+Get some pretty [[https://github.com/domtronn/all-the-icons.el][icons]] that are needed by several other packages:
+
+#+BEGIN_SRC emacs-lisp
+(use-package all-the-icons)
+#+END_SRC
+
+[[https://company-mode.github.io/][COMPlete ANYthing]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :hook (after-init-hook . global-company-mode))
+#+END_SRC
+
+Keep the mode line clean by hiding minor-modes with [[https://github.com/emacsmirror/diminish][diminish]]:
+
+#+BEGIN_SRC emacs-lisp
+(use-package diminish)
+#+END_SRC
+
+Add a [[https://github.com/seagle0128/doom-modeline][pretty mode line]]:
+
+#+BEGIN_SRC emacs-lisp
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-unicode-fallback t))
+#+END_SRC
+
+Help to learn key bindings by [[https://github.com/justbur/emacs-which-key][suggesting keys]]:
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :diminish which-key-mode
+  :config
+  (which-key-mode))
+#+END_SRC
+
+** Development
+
+*** Language server protocol ([[https://langserver.org/][LSP]])
+
+Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programming languages:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    :init (setq lsp-keymap-prefix "C-c h")
+    :hook ((python-mode . lsp)
+     (bash-mode . lsp)
+     (dockerfile-mode . lsp)
+     (c-mode . lsp)
+     (c++-mode . lsp)
+     (js-mode . lsp)
+     (json-mode . lsp)
+     (typescript-mode . lsp)
+     (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+  ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-doc-position 'at-point
+    lsp-ui-doc-show-with-cursor nil
+    lsp-lens-enable nil
+    lsp-ui-flycheck-enable t))
+
+  (use-package lsp-python-ms
+    :init (setq lsp-python-ms-auto-install-server t)
+    :hook (python-mode . (lambda ()
+         (require 'lsp-python-ms)
+         (lsp)))
+    :config
+    (setq lsp-python-ms-executable
+          "~/.local/share/virtualenvs/.emacs.d-Qr0izAws/bin/pylsp"))
+#+END_SRC
+
+*** Version control
+
+#+CAPTION: https://magit.vc/
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :bind ("C-x g" . magit-status))
+#+END_SRC
+
+*** [[https://docs.docker.com/][Docker]]
+
+I always have several projects running at the same time. Often, these projects use very different development chains and deployment environments. Docker makes this work flow a breeze.
+
+#+BEGIN_SRC emacs-lisp
+(use-package docker)
+(use-package docker-compose-mode)
+(use-package dockerfile-mode
+  :mode "^Dockerfile$")
+#+END_SRC
+
+*** Language modes
+
+#+BEGIN_SRC emacs-lisp
+(use-package gherkin-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package jinja2-mode
+  :mode ("\\.mustache$" "\\.djhtml$" "\\.jinja2$" ))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :mode (("\\.markdown\\'" . markdown-mode)
+   ("\\.md\\'" . markdown-mode)))
+#+END_SRC
+
+** Text processing
+
+[[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html][spell checking]] text modes and code comments:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell
+    :init
+    (setq ispell-program-name "aspell"
+    ispell-list-command "--list")
+    :hook
+    ((prog-mode-hook . flyspell-prog-mode)
+     (text-mode-hook . flyspell-mode))
+    :config
+    ;; fix mouse
+    (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+    (define-key flyspell-mouse-map [mouse-3] #'undefined))
+#+END_SRC
+
+[[https://github.com/bnbeckwith/writegood-mode][Writegood]]: Find common writing problems
+
+#+BEGIN_SRC emacs-lisp
+  (use-package writegood-mode
+    :commands writegood-mode
+    :diminish writegood-mode
+    :hook (text-mode-hook org-mode-hook))
+#+END_SRC
+
+** [[https://orgmode.org/][Org-mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :requires htmlize
+    :hook (org-mode-hook . org-indent-mode)
+    :config
+    (org-clock-persistence-insinuate)
+
+    (setq org-agenda-custom-commands
+    '(("h" "TODOs history of closed tasks"
+       todo "DONE|CANCELLED|DEFERRED"
+       ((org-agenda-log-mode-items '(clock state))
+        (org-agenda-sorting-strategy '(timestamp-down))))
+      ("o" "Open TODOs"
+       todo "TODO|NEXT|ACTIVE"
+       ((org-agenda-log-mode-items '(clock state))
+        (org-agenda-sorting-strategy '(priority-down todo-state-down timestamp-down))))
+      ("p" "Review previous month"
+       agenda ""
+       ((org-agenda-span 'month)
+        (org-agenda-start-day "-1m")
+        (org-agenda-start-with-log-mode t)
+        (org-agenda-log-mode-items '(clock state))
+        (org-agenda-archives-mode t) ; include archive files
+        ))
+      ("l" "TODOs for later"
+       todo "SOMEDAY"
+       ((org-agenda-sorting-strategy '(todo-state-up priority-down)))))
+    org-capture-templates
+    `(("b" "blog" entry (file "~/src/dwim/posts/index.org") "* DRAFT %?\n%a"
+       :prepend t
+       :emtpy-lines 1
+       :unnarrowed t)
+      ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
+  SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
+  :PROPERTIES:
+  :STYLE: habit
+  :REPEAT_TO_STATE: NEXT
+  :END:
+  ")
+      ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
+      ;; ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
+      ("m" "meeting" entry (file org-default-notes-file) "* %U: %?               :meeting:\nWith:\n\n")
+      ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
+       :prepend t
+       :emtpy-lines 1
+       :unnarrowed t)
+      ("t" "todo" entry (file+headline org-default-notes-file "Work") "* TODO %?\n%U\n%a"
+       :prepend t
+       :emtpy-lines 1
+       :unnarrowed t)
+      ("w" "writing" entry (file "~/src/fiction/process.org") "* %?\n%a"
+       :prepend t
+       :emtpy-lines 1
+       :unnarrowed t)
+      ))
+    :bind (("\C-c a" . org-agenda)
+     ("\C-c c" . org-capture)
+     ("\C-c l" . org-store-link)))
+#+END_SRC
+
+Use [[https://www.emacswiki.org/emacs/AutoInsertMode][autoinsert]] to start a new org file with some basic content:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package autoinsert
+    :hook (find-file-hook . auto-insert)
+    :config
+    (setq auto-insert-query nil)
+    (auto-insert-mode 1)
+    (setq auto-insert-alist nil) ;; remove this to restore defaults
+    (define-auto-insert '(org-mode . "org-mode file")
+      '("org-mode header"
+        "#+TITLE: " (file-name-base (buffer-file-name)) \n
+        "#+DATE: " (format-time-string "%Y-%m-%d") \n
+        "#+LANGUAGE: nl" \n
+        \n
+        )))
+#+END_SRC
+
+
+[[https://www.orgroam.com/manual.html][Zettelkasten]] in Org:
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-roam
+  :after org
+  :config
+  (setq org-roam-db-update-method 'immediate)
+  :hook
+  ((org-mode . org-roam-mode))  ;; could also be from after-init-hook
+  :custom
+  (org-roam-directory (steets/org-path "roam"))
+  (org-roam-capture-templates
+   '(("d" "default" plain (function org-roam--capture-get-point)
+      "%?"
+      :file-name "%<%Y-%m-%d-%H%M%S>-${slug}"
+      :head "#+ROAM_TAGS: \n#+ROAM_ALIAS: \n"
+      :unnarrowed t)))
+)
+#+END_SRC
+
+Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-Deft][deft]] to search Zettels:
+
+#+BEGIN_SRC emacs-lisp
+(use-package deft
+  :after org-roam
+  :config (setq deft-directory org-roam-directory
+    deft-extensions '("md" "org")
+    deft-default-extension "org"))
+#+END_SRC
+
+* Functions
+
+#+BEGIN_SRC emacs-lisp
+(require 'cl-lib)
+
+
+(defun steets/read-file (filePath)
+  "Return FILEPATH's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+
+
+(defun steets/find-regexp (regexp)
+  "Return first occurrence of REGEXP in current buffer."
+  (goto-char (point-min))
+  (search-forward-regexp regexp)
+  (match-string 1))
+
+
+(defun steets/word-frequency ()
+  "Return a hash with word frequencies from current buffer."
+  (interactive)
+  (let ((table (make-hash-table :test 'equal :size 128)))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "\\<[[:word:]]+\\>" nil t)
+  (let ((word (downcase (match-string 0))))
+    (message word)
+    (puthash word (1+ (gethash word table 0)) table))
+  ))
+    (maphash (lambda (key val)
+         (message (format "%s: %d" key val)))
+       table)))
+
+(setq steets/root-dir
+      (pcase system-type
+  ("windows-nt" "S:\\")
+  ("cygwin" "/s/")
+  (code "~/src/")
+  ))
+
+(defun steets/path-join (root &rest dirs)
+  "like Python's os.path.join"
+  (if (not dirs) root
+    (apply 'steets/path-join
+     (expand-file-name (car dirs) root)
+     (cdr dirs))))
+
+(defun steets/org-file (name)
+  "Return path to org file"
+  (steets/path-join steets/root-dir "org" (concat name ".org")))
+
+
+(defun steets/find-file(directory)
+  "Find a file in DIRECTORY"
+  (interactive)
+  (find-file (read-file-name "Find file: " directory)))
+
+(defun steets/god-mode-line ()
+  "Change mode line in God mode "
+  (cond (god-local-mode
+   (progn
+     (set-face-background 'mode-line "tomato")
+     (set-face-background 'mode-line-inactive "firebrick")))
+  (t (progn
+       (set-face-background 'mode-line steets/mode-line-background)
+       (set-face-background 'mode-line-inactive steets/mode-line-background-inactive)))))
+
+(defun steets/org-show-just-me (&rest _)
+  "Fold all other trees, then show entire current subtree."
+  (interactive)
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree))
+
+(defun steets/switch-to-minibuffer ()
+  "switch to minibuffer window (if active)"
+  (interactive)
+  (when (active-minibuffer-window)
+    (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+    (select-window (active-minibuffer-window))))
+#+END_SRC
+
+* Key bindings
+
+I like to keep all my key bindings in one place. This means I cannot keep them with related configuration, but that's just one of the dilemmas.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-<tab>") 'next-buffer)
+(global-set-key (kbd "C-S-<iso-lefttab>") 'previous-buffer)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-/") 'comment-line)
+(global-set-key (kbd "M-<up>")  ; move line up
+    (lambda () (interactive)
+      (transpose-lines 1) (forward-line -2) (indent-according-to-mode)))
+(global-set-key (kbd "M-<down>")  ; move line down
+    (lambda () (interactive)
+      (forward-line 1) (transpose-lines 1) (forward-line -1)
+      (indent-according-to-mode)))
+#+END_SRC
+
+convention: C-c <letter> for user keys:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c a") 'apt-utils-search)
+(global-set-key (kbd "C-c b") 'eval-buffer)
+(global-set-key (kbd "C-c c") 'customize-variable)
+(global-set-key (kbd "C-c D") 'docker)
+(global-set-key (kbd "C-c d")  ; duplicate line
+    (lambda () (interactive)
+      (save-excursion
+        (let ((kill-read-only-ok t) deactivate-mark)
+          (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
+(global-set-key (kbd "C-c e") 'speedbar)
+(global-set-key (kbd "C-c f") 'format-all-buffer)
+(global-set-key (kbd "C-c g") 'grep)
+;; (global-set-key (kbd "C-c h") RESERVED FOR LSP
+;; (global-set-key (kbd "C-c g") 'gnus)
+(global-set-key (kbd "C-c i") (lambda () (interactive) (find-file "~/.emacs.d/README.org")))
+(global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
+(global-set-key (kbd "C-c l") 'package-list-packages)
+;; (global-set-key (kbd "C-c l") 'display-line-numbers-mode)
+;; (global-set-key (kbd "C-c m") 'mu4e)
+(global-set-key (kbd "C-c m") 'compile)
+(global-set-key (kbd "C-c n") 'neotree-toggle)
+(global-set-key (kbd "C-c o b") (lambda () (interactive) (find-file "~/src/dwim/posts/index.org")))
+(global-set-key (kbd "C-c o c") 'steets/org-show-just-me) ;; center
+(global-set-key (kbd "C-c o d") 'deft)
+(global-set-key (kbd "C-c o e") 'org-entities-help)
+(global-set-key (kbd "C-c o f") (lambda () (interactive) (steets/find-file org-directory)))
+(global-set-key (kbd "C-c o i") (lambda () (interactive) (org-clock-in '(4))))
+(global-set-key (kbd "C-c o j") 'org-clock-goto)
+(global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file (steets/org-path "notes.org"))))
+(global-set-key (kbd "C-c o o") #'org-clock-out)
+(global-set-key (kbd "C-c o v") 'org-velocity)
+(global-set-key (kbd "C-c s") 'sort-lines)
+(global-set-key (kbd "C-c S") 'window-swap-states)
+(global-set-key (kbd "C-c t") 'ansi-term)
+(global-set-key (kbd "C-c u")  ;; dos2unix
+    (lambda() (interactive)
+      (revert-buffer-with-coding-system 'unix t)
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward "" nil t) (replace-match "")))))
+(global-set-key (kbd "C-c v") 'insert-char)
+(global-set-key (kbd "C-c w") 'count-words)
+(global-set-key (kbd "C-c z /") #'deft)
+(global-set-key (kbd "C-c z b") #'org-roam-switch-to-buffer)
+(global-set-key (kbd "C-c z c") #'org-roam-capture)
+(global-set-key (kbd "C-c z d") #'org-roam-find-directory)
+(global-set-key (kbd "C-c z f") #'org-roam-find-file)
+(global-set-key (kbd "C-c z h") #'org-roam-find-index)
+(global-set-key (kbd "C-c z i") #'org-roam-insert)
+(global-set-key (kbd "C-c z t") #'org-roam-buffer-toggle-display)
+#+END_SRC
+
+Overrides:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-z") 'undo) ; Emacs default is bound to hide Emacs.
+#+END_SRC
+
+* Hooks
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'text-mode-hook 'visual-line-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'outline-minor-mode)
+(add-hook 'after-save-hook
+    'executable-make-buffer-file-executable-if-script-p)
+(add-hook 'org-mode-hook
+    (lambda ()
+      ;; file modification date
+      (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
+      (set (make-local-variable 'time-stamp-start) "^#\\+DATE: +")
+      (set (make-local-variable 'time-stamp-end) "$")
+
+      ;; Switch language for Org file, if a `#+LANGUAGE:' meta-tag is on top 14 lines.
+      (save-excursion
+        (goto-line 15)
+        (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
+      (ispell-change-dictionary (match-string 1))))))
+#+END_SRC
+
+* Final tweaks
+
+#+BEGIN_SRC emacs-lisp
+(display-time)
+
+(set-language-environment "UTF-8")
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(put 'narrow-to-region 'disabled nil)
+
+(put 'dired-find-alternate-file 'disabled nil)
+
+(find-file (steets/org-path "notes.org"))
+#+END_SRC
+
+* Sandbox
+
+#+BEGIN_SRC emacs-lisp
+  (use-package apt-utils
+    :straight (apt-utils
+         :type git
+         :host github
+         :repo "emacsmirror/emacswiki.org"
+         :branch "master"
+         :files ("apt-utils.el")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; https://github.com/emacsorphanage/git-gutter
+  (use-package git-gutter
+    :init (global-git-gutter-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; https://github.com/lassik/emacs-format-all-the-code
+  (use-package format-all
+    :hook
+    ((prog-mode-hook . format-all-mode)
+     (format-all-mode-hook . format-all-ensure-formatter)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; https://github.com/creichert/ido-vertical-mode.el
+  (use-package ido-vertical-mode
+    :init
+    (ido-mode 1)
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'hl-line nil :inherit nil :background "grey25")
+#+END_SRC
+
+* Graveyard
+  :PROPERTIES:
+  :header-args: :tangle no :collapse yes
+  :END:
+
+Rejected configuration.
+
+#+BEGIN_SRC emacs-lisp
+;; The Uncompromising Python Code Formatter
+;; https://github.com/psf/black
+(use-package blacken
+  :config
+  (add-hook 'python-mode-hook 'blacken-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file))
+#+END_SRC
+
+* History
+
+I tend to bounce between Emacs and other editors (VS Code, Sublime, ...).
+When I am using Emacs I tend to grow my config until it feels too big. An then I start over.
+
+So, here it is. I’ll be working with this for a while.
+
+** 2021
+
+Move to literate config file (embedded in org-file)
+
+** 2020
+
+Back with a fresh start.
+
+** 2019
+
+Trying to go back to (mostly) vanilla Emacs, with minimal config.
+
+** 2018
+
+Back to a custom config, using [[https://github.com/jwiegley/use-package][use-package]].
+
+** 2017: Prelude
+
+I decided to give Prelude a go. This is the contents of my ~personal~ directory.
+
+After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.

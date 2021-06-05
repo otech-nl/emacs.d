@@ -1,0 +1,14 @@
+--style=java
+--suffix=none
+--indent=spaces=2
+--indent-cases
+--indent-modifiers
+--indent-namespaces
+--indent-switches
+--pad-oper
+--pad-comma
+--unpad-paren
+--align-pointer=type
+--align-reference=name
+--add-braces
+--max-code-length=100
