@@ -5,26 +5,55 @@
 
 * Background
 
-In the early 1990s I was introduced to Emacs. Since then, I tend to bounce between Emacs and other editors (VS Code, Sublime, ...). But currently I am on an Emacs-streak of 5+ years. When I use Emacs I tend to grow my config until it feels too big. An then I start over.
+In the early 1990s I was introduced to Emacs. Since then, I tend to bounce between Emacs and other editors (VS Code, Sublime, ...). But currently I am on an Emacs-streak of 5+ years.
 
-So, here it is. I’ll be working with this for a while.
+When I use Emacs I tend to grow my config until it feels too big. And then I start over. So, here it is. I’ll be working with this for a while.
 
 ** Considerations
 
 I use Emacs mostly professionally, mostly for coding (JS, Python, C/C++) projects (org-mode).
 
 With this configuration, I try to stick to the following guidelines:
-- stick to vanilla Emacs as much as possible
-- only add a package when it actually adds value
-- resist the urge to tinker
+1. stick to vanilla Emacs as much as possible
+2. only add a package when it actually adds value
+3. resist the urge to tinker
 
-***  Essentials
+Ad 1: This means I try to learn vanilla key binding, so no UAC for example. I use a built-in theme.
+
+Ad 2: This means I stay away from eye-candy, unless it improves usability. Also, I do not add a package just because it is clever of hip.
+
+Ad 3: And failing miserably. Because what would be the fun in that?
+
+Reminder: Start =emacs --debug-init= to debug initialization and =emacs -Q= to skip initialization.
+
+*** Literate configuration
+
+[[http://cleancoder.com/products][Uncle Bob]] [[https://www.goodreads.com/quotes/835238-indeed-the-ratio-of-time-spent-reading-versus-writing-is][teaches]] we spend far more time reading source code than writing it. Hence, it makes sense to optimize for the former, but in reality it seems we don't. Coders are cranking out code as fast as they can type, without regard to readability for others (and their future self). I know I am prone to doing just that.
+
+Instead we could endeavor to make code as readable as possible, and literate programming can help with that. In this specific case, embedding my configuration in an org file allows me to remind me of the effects of certain settings and record the choices that lead up to them.
+
+On the other hand, comments are overrated. If an identifier is sufficiently explained by its name, I do not need a comment. A term that can be found in the manual or can easily be Googled does not need to be explained. To facilitate this and avoid unnecessary searching, I include links to documentation whenever possible.
+
+Some other examples of literate configurations:
+- [[https://github.com/novoid/dot-emacs/blob/master/config.org][Karl Voit]]
+- [[https://github.com/mwfogleman/.emacs.d][Tasshin Fogleman]]
+- [[https://github.com/geolessel/dotfiles/tree/master/emacs/emacs.d][Geoffrey Lessel]]
+- [[https://github.com/hrs/dotfiles/blob/main/emacs/dot-emacs.d/configuration.org][Harry R. Schwartz]]
+
+*** Essentials
 
 I would not want to do without:
 1. [[Bootstrap][use-package]]
 2. [[Org-mode]]
 3. [[Language server protocol][lsp-mode]]
 4. [[Version control][Magit]]
+
+*** Limitations
+
+At this point I have decided to keep a number of applications separate from Emacs:
+- browse in Chrome
+- email in GMail (in Chrome)
+- shell (=zsh=) in a terminal
 
 *** Dilemmas
 
@@ -36,16 +65,12 @@ In both cases I choose a central location.
 
 ** History
 
-- 2021 :: Move to literate config file (embedded in org-file)
+- 2021 :: Moved to literate config file (embedded in org-file)
 
 - 2020 :: Back with a fresh start.
-
 - 2019 :: Trying to go back to (mostly) vanilla Emacs, with minimal config.
-
 - 2018 :: Back to a custom config, using [[https://github.com/jwiegley/use-package][use-package]].
-
-- 2017 :: Prelude
-  I decided to give Prelude a go. This is the contents of my ~personal~ directory.
+- 2017 :: I decided to give Prelude a go. This is the contents of my ~personal~ directory.
 
   After some initial misgivings (mainly due to having to relearn Prelude key strokes vs custom ones) I find that my Prelude customization is much smaller than my vanilla Emacs one.
 
@@ -75,16 +100,18 @@ I prefer to use the customize interface whenever possible and store customizatio
 
 #+BEGIN_SRC emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file)
+  (if (file-exists-p custom-file) (load custom-file))
 #+END_SRC
 
 I am aware that this means that I can't keep customizations with their packages. It's just one of those [[Dilemmas][dilemmas]].
+
+The main disadvantage of this choice is that comments in the =custom-set-variables= statement are lost when =customize= updates it. But documentation for each variable can be accessed through =C-h f=.
 
 * Packages
 
 ** Bootstrap
 
-[[https://github.com/raxod502/straight.el][Straight]]
+I use [[https://github.com/jwiegley/use-package][use-package]] package configuration with [[https://github.com/raxod502/straight.el][straight]] package manager:
 
 #+BEGIN_SRC emacs-lisp
   (defvar bootstrap-version)
@@ -102,9 +129,9 @@ I am aware that this means that I can't keep customizations with their packages.
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 
-Straight does not automatically update packages. To do this manually, run =(straight-pull-all)=.
+Straight does not automatically update packages. I like this, because it make Emacs start up faster. To update manually, run =(straight-pull-all)=.
 
-Replace [[https://github.com/jwiegley/use-package][use-package]] with =straight-use-package=:
+Replace =use-package= macro with =straight-use-package=:
 
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'use-package)
@@ -133,13 +160,7 @@ Get some pretty [[https://github.com/domtronn/all-the-icons.el][icons]] that are
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :hook (after-init-hook . global-company-mode))
-#+END_SRC
-
-Keep the mode line clean by hiding minor-modes with [[https://github.com/emacsmirror/diminish][diminish]] (used by [[Bootstrap][use-package]]):
-
-#+BEGIN_SRC emacs-lisp
-  (use-package diminish)
+    :config (global-company-mode))
 #+END_SRC
 
 Add a [[https://github.com/seagle0128/doom-modeline][pretty mode line]]:
@@ -149,6 +170,12 @@ Add a [[https://github.com/seagle0128/doom-modeline][pretty mode line]]:
     :hook (after-init . doom-modeline-mode)
     :config
     (setq doom-modeline-unicode-fallback t))
+#+END_SRC
+
+Keep the mode line clean by hiding minor-modes with [[https://github.com/emacsmirror/diminish][diminish]] (used by [[Bootstrap][use-package]]):
+
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish)
 #+END_SRC
 
 Help to learn key bindings by [[https://github.com/justbur/emacs-which-key][suggesting keys]]:
@@ -168,8 +195,7 @@ Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programmi
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    :init (setq lsp-keymap-prefix "C-c h")
+    :init (setq lsp-keymap-prefix "C-c h") ;; alternatives - "C-l", "C-c l"
     :hook ((python-mode . lsp)
            (bash-mode . lsp)
            (dockerfile-mode . lsp)
@@ -182,7 +208,7 @@ Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programmi
     :commands lsp)
 #+END_SRC
 
-[[https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/][Manage]] UI elements of lsp-mode:
+Manage [[https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/][UI elements]] of lsp-mode:
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-ui
@@ -480,6 +506,116 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
 
 I like to keep all my key bindings in one place. This means I cannot keep them with related configuration, but that's just one of the [[Dilemmas][dilemmas]].
 
+** User keys
+
+The accepted convention is to use =C-c <letter>= (=mode-specific-map=) for user key bindings.
+
+*** Keymaps
+
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Keymaps.html][Keymaps]] provide an elegant way of grouping related key bindings.
+
+**** Files
+
+I used a keymap to visit files I open often, but realized this is duplicating [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bookmarks.html][bookmarks]]:
+Keymap =C-x r= with =m= to make a bookmark, =b= to open it, and =l= to list them.
+
+**** Toggle
+
+Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wizardry.html][endless]]: "The manual recommends =C-c= for user keys, but =C-x t= is always free, whereas =C-c t= is used by some modes."
+
+#+BEGIN_SRC emacs-lisp
+  (define-prefix-command 'steets/toggle-map)
+  (define-key mode-specific-map "t" 'steets/toggle-map)
+
+  (define-key steets/toggle-map "e" 'toggle-debug-on-error)
+  (define-key steets/toggle-map "f" 'format-all-buffer)
+  (define-key steets/toggle-map "r" 'dired-toggle-read-only)
+  (define-key steets/toggle-map "s" 'flyspell-mode)
+  (define-key steets/toggle-map "w" 'whitespace-mode)
+#+END_SRC
+
+**** Launch
+
+Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap-for-standalone-features.html][endless]].
+
+#+BEGIN_SRC emacs-lisp
+  (define-prefix-command 'steets/launcher-map)
+  (define-key mode-specific-map "l" 'steets/launcher-map)
+
+  (define-key steets/launcher-map "c" 'calc)
+  (define-key steets/launcher-map "D" 'docker)
+  (define-key steets/launcher-map "d" 'ediff-buffers)
+  (define-key steets/launcher-map "f" 'find-dired)
+  (define-key steets/launcher-map "g" 'grep)
+  (define-key steets/launcher-map "h" 'man)
+  (define-key steets/launcher-map "l" 'package-list-packages)
+  (define-key steets/launcher-map "m" 'compile)
+  (define-key steets/launcher-map "s" 'flyspell-buffer)
+  (define-key steets/launcher-map "t" 'ansi-term)
+#+END_SRC
+
+**** Org-mode
+
+#+BEGIN_SRC emacs-lisp
+  (define-prefix-command 'steets/org-map)
+  (define-key mode-specific-map "o" 'steets/org-map)
+
+  (define-key steets/org-map "c" 'steets/org-show-just-me) ;; center
+  (define-key steets/org-map "d" 'deft)
+  (define-key steets/org-map "e" 'org-entities-help)
+  (define-key steets/org-map "f" (lambda ()
+                                   (interactive)
+                                   (steets/find-file org-directory)))
+  (define-key steets/org-map "j" 'org-clock-goto)
+  (define-key steets/org-map "l" 'org-insert-link)
+  (define-key steets/org-map "n" (lambda ()
+                                   (interactive)
+                                   (find-file (steets/org-path "notes.org"))))
+#+END_SRC
+
+**** Zettelkasten
+
+#+BEGIN_SRC emacs-lisp
+  (define-prefix-command 'steets/zettel-map)
+  (define-key mode-specific-map "z" 'steets/zettel-map)
+
+  (define-key steets/zettel-map "/" 'deft)
+  (define-key steets/zettel-map "b" 'org-roam-switch-to-buffer)
+  (define-key steets/zettel-map "c" 'org-roam-capture)
+  (define-key steets/zettel-map "d" 'org-roam-find-directory)
+  (define-key steets/zettel-map "f" 'org-roam-find-file)
+  (define-key steets/zettel-map "h" 'org-roam-find-index)
+  (define-key steets/zettel-map "i" 'org-roam-insert)
+  (define-key steets/zettel-map "t" 'org-roam-buffer-toggle-display)
+#+END_SRC
+
+*** Others
+
+#+BEGIN_SRC emacs-lisp
+  (define-key mode-specific-map "b" 'eval-buffer)
+  (define-key mode-specific-map "c" 'customize-variable)
+  (define-key mode-specific-map "d"  ; duplicate line
+                  (lambda () (interactive)
+                    (save-excursion
+                      (let ((kill-read-only-ok t) deactivate-mark)
+                        (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
+  ;; (define-key mode-specific-map "h" RESERVED FOR LSP
+  (define-key mode-specific-map "j" (lambda () (interactive) (join-line -1)))
+  (define-key mode-specific-map "m" 'steets/switch-to-minibuffer)
+  (define-key mode-specific-map "s" 'sort-lines)
+  (define-key mode-specific-map "S" 'window-swap-states)
+  (define-key mode-specific-map "u"  ;; dos2unix
+                  (lambda() (interactive)
+                    (revert-buffer-with-coding-system 'unix t)
+                    (save-excursion
+                      (goto-char (point-min))
+                      (while (search-forward "" nil t) (replace-match "")))))
+  (define-key mode-specific-map "v" 'insert-char)
+  (define-key mode-specific-map "w" 'count-words)
+#+END_SRC
+
+** Overrides
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-<tab>") 'next-buffer)
   (global-set-key (kbd "C-S-<iso-lefttab>") 'previous-buffer)
@@ -493,58 +629,7 @@ I like to keep all my key bindings in one place. This means I cannot keep them w
                   (lambda () (interactive)
                     (forward-line 1) (transpose-lines 1) (forward-line -1)
                     (indent-according-to-mode)))
-#+END_SRC
 
-The accepted convention is to use =C-c <letter>= for user key bindings:
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c b") 'eval-buffer)
-  (global-set-key (kbd "C-c c") 'customize-variable)
-  (global-set-key (kbd "C-c D") 'docker)
-  (global-set-key (kbd "C-c d")  ; duplicate line
-                  (lambda () (interactive)
-                    (save-excursion
-                      (let ((kill-read-only-ok t) deactivate-mark)
-                        (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
-  (global-set-key (kbd "C-c f") 'format-all-buffer)
-  (global-set-key (kbd "C-c g") 'grep)
-  ;; (global-set-key (kbd "C-c h") RESERVED FOR LSP
-  (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file "~/.emacs.d/README.org")))
-  (global-set-key (kbd "C-c j") (lambda () (interactive) (join-line -1)))
-  (global-set-key (kbd "C-c l") 'package-list-packages)
-  (global-set-key (kbd "C-c m") 'compile)
-  (global-set-key (kbd "C-c o b") (lambda () (interactive) (find-file "~/src/dwim/posts/index.org")))
-  (global-set-key (kbd "C-c o c") 'steets/org-show-just-me) ;; center
-  (global-set-key (kbd "C-c o d") 'deft)
-  (global-set-key (kbd "C-c o e") 'org-entities-help)
-  (global-set-key (kbd "C-c o f") (lambda () (interactive) (steets/find-file org-directory)))
-  (global-set-key (kbd "C-c o j") 'org-clock-goto)
-  (global-set-key (kbd "C-c o l") 'org-insert-link)
-  (global-set-key (kbd "C-c o n") (lambda () (interactive) (find-file (steets/org-path "notes.org"))))
-  (global-set-key (kbd "C-c s") 'sort-lines)
-  (global-set-key (kbd "C-c S") 'window-swap-states)
-  (global-set-key (kbd "C-c t") 'ansi-term)
-  (global-set-key (kbd "C-c u")  ;; dos2unix
-                  (lambda() (interactive)
-                    (revert-buffer-with-coding-system 'unix t)
-                    (save-excursion
-                      (goto-char (point-min))
-                      (while (search-forward "" nil t) (replace-match "")))))
-  (global-set-key (kbd "C-c v") 'insert-char)
-  (global-set-key (kbd "C-c w") 'count-words)
-  (global-set-key (kbd "C-c z /") #'deft)
-  (global-set-key (kbd "C-c z b") #'org-roam-switch-to-buffer)
-  (global-set-key (kbd "C-c z c") #'org-roam-capture)
-  (global-set-key (kbd "C-c z d") #'org-roam-find-directory)
-  (global-set-key (kbd "C-c z f") #'org-roam-find-file)
-  (global-set-key (kbd "C-c z h") #'org-roam-find-index)
-  (global-set-key (kbd "C-c z i") #'org-roam-insert)
-  (global-set-key (kbd "C-c z t") #'org-roam-buffer-toggle-display)
-#+END_SRC
-
-Overrides:
-
-#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
   (global-set-key (kbd "C-z") 'undo) ; Emacs default is bound to hide Emacs.
@@ -567,6 +652,8 @@ General hooks that are not related to packages:
 
 #+BEGIN_SRC emacs-lisp
   (display-time)
+
+  (setq system-time-locale "C")
 
   (set-language-environment "UTF-8")
 
@@ -630,7 +717,7 @@ I like my current line to be visible, including syntax highlighting:
 :header-args: :tangle no
 :END:
 
-Rejected configuration.
+Rejected configuration (will not be [[https://orgmode.org/manual/Extracting-Source-Code.html][tangled]]):
 
 - Could not get to work:
   - [[https://github.com/dgutov/diff-hl][diff-hl]] (Git-gutter does work).

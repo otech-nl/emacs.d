@@ -1,8 +1,9 @@
-;;; package --- hooks
+;;; package --- Use GNUS for reading email
 ;; -*- coding: utf-8-unix; -*-
 
 ;;; Commentary:
 ;; link to this file from ~/.gnus.el
+;; Authorization is handled through ~/.authinfo
 
 ;;; Code:
 

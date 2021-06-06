@@ -16,11 +16,13 @@
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-blinks 0)
+ '(calendar-week-start-day 1)
  '(column-number-mode t)
  '(compilation-scroll-output 'first-error)
  '(completion-ignored-extensions
    (append completion-ignored-extensions
            '("-lock.json" ".pyc")))
+ '(confirm-kill-processes nil)
  '(create-lockfiles nil)
  '(custom-enabled-themes '(misterioso))
  '(default-directory "~/src/" t)
@@ -40,12 +42,15 @@
  '(fringe-mode '(1 . 1) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
+ '(history-delete-duplicates t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(initial-scratch-message nil)
  '(js-indent-level 2)
  '(kill-whole-line t)
  '(load-prefer-newer t)
  '(midnight-mode t)
+ '(mouse-avoidance-mode 'animate nil (avoid))
  '(org-agenda-files (steets/org-path "notes.org"))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
@@ -97,7 +102,8 @@
  '(user-mail-address "steets@otech.nl")
  '(visible-bell t)
  '(whitespace-line-column 100)
- '(whitespace-style '(trailing lines-tail empty indentation::space)))
+ '(whitespace-style '(trailing lines-tail empty indentation::space))
+ '(x-stretch-cursor t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
