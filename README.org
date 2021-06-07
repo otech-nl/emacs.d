@@ -138,15 +138,13 @@ Replace =use-package= macro with =straight-use-package=:
   (setq straight-use-package-by-default t)
 #+END_SRC
 
-Reminder:
-- Use the =:init= keyword to execute code /before/ a package is loaded.
-- =:config= can be used to execute code /after/ a package is loaded.
-
-The line below is needed to get LSP right:
-
-#+BEGIN_SRC emacs-lisp
-  (straight-pull-package 'melpa)
-#+END_SRC
+Use-package tips:
+- [[https://github.com/jwiegley/use-package#getting-started][:init vs :config]]:
+  - Use the =:init= keyword to execute code /before/ a package is loaded.
+  - =:config= can be used to execute code /after/ a package is loaded.
+- The [[https://github.com/jwiegley/use-package#hooks][:hook]] construct refers to modes, while =add-hook= refers to hooks:
+  - =:hook (prog-*mode* . ace-jump-mode)=, vs
+  - =(add-hook 'prog-mode-*hook* #'ace-jump-mode)=
 
 ** Usability
 
@@ -191,7 +189,13 @@ Help to learn key bindings by [[https://github.com/justbur/emacs-which-key][sugg
 
 *** Language server protocol
 
-Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programming languages ([[https://langserver.org/][LSP]]):
+Use [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] for support of programming languages ([[https://langserver.org/][LSP]]).
+
+The line below is needed to get LSP right:
+
+#+BEGIN_SRC emacs-lisp
+  (straight-pull-package 'melpa)
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
@@ -282,8 +286,8 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
     (setq ispell-program-name "aspell"
           ispell-list-command "--list")
     :hook
-    ((prog-mode-hook . flyspell-prog-mode)
-     (text-mode-hook . flyspell-mode))
+    ((prog-mode . flyspell-prog-mode)
+     (text-mode . flyspell-mode))
     :config
     ;; fix mouse
     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
@@ -296,7 +300,7 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
   (use-package writegood-mode
     :commands writegood-mode
     :diminish writegood-mode
-    :hook (text-mode-hook org-mode-hook))
+    :hook text-mode)
 #+END_SRC
 
 ** Org-mode
@@ -307,8 +311,8 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
   (use-package org
     :requires htmlize
     :hook
-    ((org-mode-hook . org-indent-mode)
-     (org-mode-hook .
+    ((org-mode . org-indent-mode)
+     (org-mode .
           (lambda ()
             ;; file modification date
             (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
@@ -381,7 +385,7 @@ Use [[https://www.emacswiki.org/emacs/AutoInsertMode][autoinsert]] to start a ne
 
 #+BEGIN_SRC emacs-lisp
   (use-package autoinsert
-    :hook (find-file-hook . auto-insert)
+    :hook (find-file . auto-insert)
     :config
     (setq auto-insert-query nil)
     (auto-insert-mode 1)
@@ -403,7 +407,7 @@ Use [[https://www.emacswiki.org/emacs/AutoInsertMode][autoinsert]] to start a ne
     :config
     (setq org-roam-db-update-method 'immediate)
     :hook
-    ((org-mode . org-roam-mode))  ;; could also be from after-init-hook
+    (org-mode . org-roam-mode)  ;; could also be from after-init-hook
     :custom
     (org-roam-directory (steets/org-path "roam"))
     (org-roam-capture-templates
@@ -529,8 +533,11 @@ Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wiz
 
   (define-key steets/toggle-map "e" 'toggle-debug-on-error)
   (define-key steets/toggle-map "f" 'format-all-buffer)
+  (define-key steets/toggle-map "h" 'hs-toggle-hiding)
+  (define-key steets/toggle-map "H" 'hs-hide-all)
   (define-key steets/toggle-map "r" 'dired-toggle-read-only)
   (define-key steets/toggle-map "s" 'flyspell-mode)
+  (define-key steets/toggle-map "S" 'hs-show-all)
   (define-key steets/toggle-map "w" 'whitespace-mode)
 #+END_SRC
 
@@ -641,8 +648,8 @@ General hooks that are not related to packages:
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
-  (add-hook 'text-mode-hook 'visual-line-mode)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
   (add-hook 'prog-mode-hook 'outline-minor-mode)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p)
@@ -663,6 +670,7 @@ General hooks that are not related to packages:
 
   (put 'dired-find-alternate-file 'disabled nil)
 
+  ;; start in notes
   (find-file (steets/org-path "notes.org"))
 #+END_SRC
 
@@ -674,6 +682,7 @@ Space to try out new stuff.
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
+    :if (display-graphic-p) ; no fringe in terminal mode
     :config (global-git-gutter-mode))
 #+END_SRC
 
@@ -682,15 +691,15 @@ Space to try out new stuff.
 #+BEGIN_SRC emacs-lisp
   (use-package format-all
     :hook
-    ((prog-mode-hook . format-all-mode)
-     (format-all-mode-hook . format-all-ensure-formatter)))
+    ((prog-mode . format-all-mode)
+     (format-all-mode . format-all-ensure-formatter)))
 #+END_SRC
 
 [[https://github.com/creichert/ido-vertical-mode.el][ido-vertical-mode]] to make [[https://www.gnu.org/software/emacs/manual/html_mono/ido.html][IDO]] more to my taste:
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (use-package ido-vertical-mode
-    :init
+    :config
     (ido-mode 1)
     (ido-vertical-mode 1)
     (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
@@ -733,7 +742,7 @@ Rejected configuration (will not be [[https://orgmode.org/manual/Extracting-Sour
   ;; https://github.com/psf/black
   (use-package blacken
     :config
-    :hook (python-mode-hook . blacken-mode))
+    :hook (python-mode . blacken-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
