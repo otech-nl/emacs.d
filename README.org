@@ -185,6 +185,22 @@ Help to learn key bindings by [[https://github.com/justbur/emacs-which-key][sugg
     (which-key-mode))
 #+END_SRC
 
+[[https://github.com/creichert/ido-vertical-mode.el][ido-vertical-mode]] to make [[https://www.gnu.org/software/emacs/manual/html_mono/ido.html][IDO]] more to my taste:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :config
+    (ido-mode 1)
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
+#+END_SRC
+
+I like my current line to be visible, including syntax highlighting:
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'hl-line nil :inherit nil :background "grey25")
+#+END_SRC
+
 ** Development
 
 *** Language server protocol
@@ -246,6 +262,14 @@ LSP needs some help for Python:
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
+[[https://github.com/emacsorphanage/git-gutter][git-gutter]] to show changes in the fringe:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :if (display-graphic-p) ; no fringe in terminal mode
+    :config (global-git-gutter-mode))
+#+END_SRC
+
 *** Docker
 
 I always have several projects running at the same time. Often, these projects use very different development chains and deployment environments. [[https://docs.docker.com/][Docker]] makes this work flow a breeze and can be [[https://github.com/Silex/docker.el][managed]] from Emacs.
@@ -274,6 +298,17 @@ Add modes that Emacs doesn't support out of the box.
   (use-package docker-compose-mode)
   (use-package dockerfile-mode
     :mode "^Dockerfile$")
+#+END_SRC
+
+*** Formatting
+
+[[https://github.com/lassik/emacs-format-all-the-code][format-all]] for standard formatting when saving source code. See also =astylerc=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package format-all
+    :hook
+    ((prog-mode . format-all-mode)
+     (format-all-mode . format-all-ensure-formatter)))
 #+END_SRC
 
 ** Text processing
@@ -677,39 +712,6 @@ General hooks that are not related to packages:
 * Sandbox
 
 Space to try out new stuff.
-
-[[https://github.com/emacsorphanage/git-gutter][git-gutter]] to show changes in the fringe:
-
-#+BEGIN_SRC emacs-lisp
-  (use-package git-gutter
-    :if (display-graphic-p) ; no fringe in terminal mode
-    :config (global-git-gutter-mode))
-#+END_SRC
-
-[[https://github.com/lassik/emacs-format-all-the-code][format-all]] for standard formatting when saving source code. See also =astylerc=.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package format-all
-    :hook
-    ((prog-mode . format-all-mode)
-     (format-all-mode . format-all-ensure-formatter)))
-#+END_SRC
-
-[[https://github.com/creichert/ido-vertical-mode.el][ido-vertical-mode]] to make [[https://www.gnu.org/software/emacs/manual/html_mono/ido.html][IDO]] more to my taste:
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ido-vertical-mode
-    :config
-    (ido-mode 1)
-    (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
-#+END_SRC
-
-I like my current line to be visible, including syntax highlighting:
-
-#+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'hl-line nil :inherit nil :background "grey25")
-#+END_SRC
 
 * Wishlist
 
