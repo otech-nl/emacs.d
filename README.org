@@ -1,5 +1,6 @@
 #+TITLE: My Emacs configuration
 #+DATE: 2021-06-04
+#+STARTUP: contents
 #+LANGUAGE: en
 
 
@@ -18,7 +19,7 @@ With this configuration, I try to stick to the following guidelines:
 2. only add a package when it actually adds value
 3. resist the urge to tinker
 
-Ad 1: This means I try to learn vanilla key binding, so no UAC for example. I use a built-in theme.
+Ad 1: This means I try to learn vanilla key binding, so no UAC for example. Also, I try to work with built-in functionality, before I install a package (less packages, means bugs and conflicts are less likely). Also, I use a built-in theme.
 
 Ad 2: This means I stay away from eye-candy, unless it improves usability. Also, I do not add a package just because it is clever of hip.
 
@@ -78,6 +79,8 @@ In both cases I choose a central location.
 
 Names of functions and variables that I added are preceded by "/steets//".
 
+This file is called =README.org= so github will show it automatically.
+
 * Where are we?
 
 I run Emacs on different systems and platforms. And I like this config to work out of the box on all of them. So:
@@ -108,26 +111,11 @@ I am aware that this means that I can't keep customizations with their packages.
 The main disadvantage of this choice is that comments in the =custom-set-variables= statement are lost when =customize= updates it. But documentation for each variable can be accessed through =C-h f=.
 
 * Packages
-
 ** Bootstrap
 
-I use [[https://github.com/jwiegley/use-package][use-package]] package configuration with [[https://github.com/raxod502/straight.el][straight]] package manager:
+I use [[https://github.com/jwiegley/use-package][use-package]] package configuration with [[https://github.com/raxod502/straight.el][straight]] package manager.
 
-#+BEGIN_SRC emacs-lisp
-  (defvar bootstrap-version)
-
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-#+END_SRC
+The code to bootstrap straight is not here, but in [[file:init.el][init.el]], because of this [[https://github.com/raxod502/straight.el#the-wrong-version-of-my-package-was-loaded][issue]]. TLDR: When emacs loads org-babel to tangle this file, it also loads the built-in org itself. So, by the time use-package gets to configuring org, straight figures (correctly) that org is already loaded and sticks with the currently loaded version, which keeps it from updating it. To work around this, I bootstrap straight and load org in init.el.
 
 Straight does not automatically update packages. I like this, because it make Emacs start up faster. To update manually, run =(straight-pull-all)=.
 
@@ -338,29 +326,28 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
     :hook text-mode)
 #+END_SRC
 
-** Org-mode
-
-[[https://orgmode.org/manual/][Manual]]
+*** Org-mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :requires htmlize
+    :init     (message "#### Org init")
     :hook
     ((org-mode . org-indent-mode)
      (org-mode .
-          (lambda ()
-            ;; file modification date
-            (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
-            (set (make-local-variable 'time-stamp-start) "^#\\+DATE: +")
-            (set (make-local-variable 'time-stamp-end) "$")
+               (lambda ()
+                 ;; file modification date
+                 (set (make-local-variable 'time-stamp-format) "%:y-%02m-%02d")
+                 (set (make-local-variable 'time-stamp-start) "^#\\+DATE: +")
+                 (set (make-local-variable 'time-stamp-end) "$")
 
-            ;; Switch language for Org file, if a `#+LANGUAGE:' meta-tag is on top 14 lines.
-            (save-excursion
-              (goto-line 15)
-              (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
-                  (ispell-change-dictionary (match-string 1))))))
-     )
+                 ;; Switch language for Org file, if a `#+LANGUAGE:' meta-tag is on top 14 lines.
+                 (save-excursion
+                   (goto-line 15)
+                   (if (re-search-backward "#\\+LANGUAGE: +\\([A-Za-z_]*\\)" 1 t)
+                       (ispell-change-dictionary (match-string 1))))
+                 )))
     :config
+    (message "### Org config")
     (org-clock-persistence-insinuate)
 
     (setq org-agenda-custom-commands
@@ -389,14 +376,14 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
              :emtpy-lines 1
              :unnarrowed t)
             ("h" "habit" entry (file org-default-notes-file) "* NEXT %?\n%U\n%a
-  SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
-  :PROPERTIES:
-  :STYLE: habit
-  :REPEAT_TO_STATE: NEXT
-  :END:
-  ")
+        SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
+        :PROPERTIES:
+        :STYLE: habit
+        :REPEAT_TO_STATE: NEXT
+        :END:
+        ")
             ("j" "journal" entry (file+olp+datetree org-default-notes-file "Journal") "")
-            ;; ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
+            ("z" "zettelkasten" entry (file+olp+datetree org-default-notes-file "Zettelkasten") "")
             ("m" "meeting" entry (file org-default-notes-file) "* %U: %?               :meeting:\nWith:\n\n")
             ("n" "note" entry (file+headline org-default-notes-file "Personal Knowledge Base") "* %?\n%U\n%a"
              :prepend t
@@ -411,6 +398,7 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
              :emtpy-lines 1
              :unnarrowed t)
             ))
+
     :bind (("\C-c a" . org-agenda)
            ("\C-c c" . org-capture)
            ("\C-c l" . org-store-link)))
@@ -573,6 +561,7 @@ Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wiz
   (define-key steets/toggle-map "r" 'dired-toggle-read-only)
   (define-key steets/toggle-map "s" 'flyspell-mode)
   (define-key steets/toggle-map "S" 'hs-show-all)
+  (define-key steets/toggle-map "t" 'toggle-truncate-lines)
   (define-key steets/toggle-map "w" 'whitespace-mode)
 #+END_SRC
 
@@ -637,21 +626,21 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
   (define-key mode-specific-map "b" 'eval-buffer)
   (define-key mode-specific-map "c" 'customize-variable)
   (define-key mode-specific-map "d"  ; duplicate line
-                  (lambda () (interactive)
-                    (save-excursion
-                      (let ((kill-read-only-ok t) deactivate-mark)
-                        (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
+    (lambda () (interactive)
+      (save-excursion
+        (let ((kill-read-only-ok t) deactivate-mark)
+          (read-only-mode 1) (kill-whole-line) (read-only-mode 0) (yank)))))
   ;; (define-key mode-specific-map "h" RESERVED FOR LSP
   (define-key mode-specific-map "j" (lambda () (interactive) (join-line -1)))
   (define-key mode-specific-map "m" 'steets/switch-to-minibuffer)
   (define-key mode-specific-map "s" 'sort-lines)
   (define-key mode-specific-map "S" 'window-swap-states)
   (define-key mode-specific-map "u"  ;; dos2unix
-                  (lambda() (interactive)
-                    (revert-buffer-with-coding-system 'unix t)
-                    (save-excursion
-                      (goto-char (point-min))
-                      (while (search-forward "" nil t) (replace-match "")))))
+    (lambda() (interactive)
+      (revert-buffer-with-coding-system 'unix t)
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward "" nil t) (replace-match "")))))
   (define-key mode-specific-map "v" 'insert-char)
   (define-key mode-specific-map "w" 'count-words)
 #+END_SRC
@@ -683,6 +672,7 @@ General hooks that are not related to packages:
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
+  (add-hook 'text-mode-hook 'visual-line-mode)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (add-hook 'prog-mode-hook 'outline-minor-mode)
@@ -704,6 +694,8 @@ General hooks that are not related to packages:
   (put 'narrow-to-region 'disabled nil)
 
   (put 'dired-find-alternate-file 'disabled nil)
+
+  (require 'iso-transl) ;; needed since upgrade to Ubuntu 21.04
 
   ;; start in notes
   (find-file (steets/org-path "notes.org"))

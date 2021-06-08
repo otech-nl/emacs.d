@@ -51,7 +51,7 @@
  '(load-prefer-newer t)
  '(midnight-mode t)
  '(mouse-avoidance-mode 'animate nil (avoid))
- '(org-agenda-files (steets/org-path "notes.org"))
+ '(org-agenda-files (list (steets/org-path "notes.org")))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-deadline-prewarning-if-scheduled t)
  '(org-agenda-skip-scheduled-if-done t)
