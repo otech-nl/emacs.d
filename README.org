@@ -1,6 +1,6 @@
 #+TITLE: My Emacs configuration
 #+DATE: 2021-06-04
-#+STARTUP: contents
+#+STARTUP: show3levels
 #+LANGUAGE: en
 
 
@@ -19,13 +19,19 @@ With this configuration, I try to stick to the following guidelines:
 2. only add a package when it actually adds value
 3. resist the urge to tinker
 
-Ad 1: This means I try to learn vanilla key binding, so no UAC for example. Also, I try to work with built-in functionality, before I install a package (less packages, means bugs and conflicts are less likely). Also, I use a built-in theme.
+Ad 1: This means I try to learn vanilla key binding, so no UAC for example. Also, I try to work with built-in functionality, before I install a package (less packages, means less bugs and conflicts). Also, I use a built-in theme.
 
 Ad 2: This means I stay away from eye-candy, unless it improves usability. Also, I do not add a package just because it is clever of hip.
 
-Ad 3: And failing miserably. Because what would be the fun in that?
+Ad 3: And failing miserably. Because what would be the fun in that? Moreover, I think it is important to [[https://www.bridgeheadsoftware.com/2016/04/training-matters-are-you-too-busy-chopping-wood-to-sharpen-the-axe/][sharpen your axe]].  [[https://www.reddit.com/user/publicvoit/][publicvoit]] nails it by:
 
-Reminder: Start =emacs --debug-init= to debug initialization and =emacs -Q= to skip initialization.
+#+BEGIN_QUOTE
+Everybody is procrastinating. Anybody who disagrees is either lying or she/he is not aware of doing X as procrastinating.
+The good news here is that you seem to optimize your working environment while procrastinating.
+#+END_QUOTE
+
+
+Reminder: Start =emacs --debug-init= to debug initialization, =emacs -Q= to skip initialization, =emacs -q --load <file>= to use an alternative init file.
 
 *** Literate configuration
 
@@ -40,6 +46,7 @@ Some other examples of literate configurations:
 - [[https://github.com/mwfogleman/.emacs.d][Tasshin Fogleman]]
 - [[https://github.com/geolessel/dotfiles/tree/master/emacs/emacs.d][Geoffrey Lessel]]
 - [[https://github.com/hrs/dotfiles/blob/main/emacs/dot-emacs.d/configuration.org][Harry R. Schwartz]]
+- [[https://github.com/clintonboys/emacs.d/blob/master/init.org][Clinton Boys]]
 
 *** Essentials
 
@@ -99,7 +106,7 @@ I run Emacs on different systems and platforms. And I like this config to work o
 
 * Customization
 
-I prefer to use the customize interface whenever possible and store customizations in a separate [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][file]]:
+I prefer to use the customize interface whenever possible, because it gives useful hints and documentation. I store customizations in a separate [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][file]]:
 
 #+BEGIN_SRC emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
@@ -108,7 +115,7 @@ I prefer to use the customize interface whenever possible and store customizatio
 
 I am aware that this means that I can't keep customizations with their packages. It's just one of those [[Dilemmas][dilemmas]].
 
-The main disadvantage of this choice is that comments in the =custom-set-variables= statement are lost when =customize= updates it. But documentation for each variable can be accessed through =C-h f=.
+The main disadvantage of this choice is that comments in the =custom-set-variables= statement are lost when =customize= updates it. But documentation for each variable can be accessed through =C-h v=.
 
 * Packages
 ** Bootstrap
@@ -250,7 +257,7 @@ LSP needs some help for Python:
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
-[[https://github.com/emacsorphanage/git-gutter][git-gutter]] to show changes in the fringe:
+[[https://github.com/emacsorphanage/git-gutter][git-gutter]] to show changes in the fringe (could not get alternative [[https://github.com/dgutov/diff-hl][diff-hl]] to work):
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
@@ -330,7 +337,6 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
 
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :init     (message "#### Org init")
     :hook
     ((org-mode . org-indent-mode)
      (org-mode .
@@ -347,7 +353,6 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
                        (ispell-change-dictionary (match-string 1))))
                  )))
     :config
-    (message "### Org config")
     (org-clock-persistence-insinuate)
 
     (setq org-agenda-custom-commands
@@ -399,9 +404,36 @@ On the fly [[http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.ht
              :unnarrowed t)
             ))
 
-    :bind (("\C-c a" . org-agenda)
-           ("\C-c c" . org-capture)
-           ("\C-c l" . org-store-link)))
+    ;; not sure how to achieve this with :bind(-keymap)
+    (define-prefix-command 'steets/org-map)
+    (define-key mode-specific-map "o" 'steets/org-map)
+    (define-prefix-command 'steets/zettel-map)
+    (define-key mode-specific-map "z" 'steets/zettel-map)
+
+    :bind (:map steets/org-map
+                ("a" . org-agenda)
+                ("c" . org-capture)
+                ("d" . deft)
+                ("e" . org-entities-help)
+                ("f" . (lambda ()
+                         (interactive)
+                         (steets/find-file org-directory)))
+                ("i" . org-insert-link)
+                ("j" . org-clock-goto)
+                ("l" . org-store-link)
+                ("n" . (lambda ()
+                         (interactive)
+                         (find-file (steets/org-path "notes.org"))))
+                :map steets/zettel-map
+                ("/" . deft)
+                ("b" . org-roam-switch-to-buffer)
+                ("c" . org-roam-capture)
+                ("d" . org-roam-find-directory)
+                ("f" . org-roam-find-file)
+                ("h" . org-roam-find-index)
+                ("i" . org-roam-insert)
+                ("t" . org-roam-buffer-toggle-display)
+                ))
 #+END_SRC
 
 Use [[https://www.emacswiki.org/emacs/AutoInsertMode][autoinsert]] to start a new org file with some basic content:
@@ -533,20 +565,21 @@ Use [[https://www.orgroam.com/manual.html#Full_002dtext-search-interface-with-De
 
 I like to keep all my key bindings in one place. This means I cannot keep them with related configuration, but that's just one of the [[Dilemmas][dilemmas]].
 
+[[https://github.com/noctuid/general.el][General]] seems an attractive option, but I could not figure out how to convert my keybindings.
+
 ** User keys
 
 The accepted convention is to use =C-c <letter>= (=mode-specific-map=) for user key bindings.
 
-*** Keymaps
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Keymaps.html][Keymaps]] provide an elegant way of grouping related key bindings. I use:
+- =C-c o= for org (see [[Org-mode]])
+- =C-c z= for org zettelkasten (see [[Org-mode]])
+- [[Helpful]] overrides =C-h= help keys.
 
-[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Keymaps.html][Keymaps]] provide an elegant way of grouping related key bindings.
-
-**** Files
-
-I used a keymap to visit files I open often, but realized this is duplicating [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bookmarks.html][bookmarks]]:
+I used to have a keymap to visit files I open often, but realized this is duplicating [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bookmarks.html][bookmarks]]:
 Keymap =C-x r= with =m= to make a bookmark, =b= to open it, and =l= to list them.
 
-**** Toggle
+*** Toggle
 
 Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wizardry.html][endless]]: "The manual recommends =C-c= for user keys, but =C-x t= is always free, whereas =C-c t= is used by some modes."
 
@@ -554,10 +587,13 @@ Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wiz
   (define-prefix-command 'steets/toggle-map)
   (define-key mode-specific-map "t" 'steets/toggle-map)
 
+  (define-key steets/toggle-map "c" 'writeroom-mode)  ; clean
   (define-key steets/toggle-map "e" 'toggle-debug-on-error)
   (define-key steets/toggle-map "f" 'format-all-buffer)
+  (define-key steets/toggle-map "g" 'git-timemachine-toggle)
   (define-key steets/toggle-map "h" 'hs-toggle-hiding)
   (define-key steets/toggle-map "H" 'hs-hide-all)
+  (define-key steets/toggle-map "m" 'steets/switch-to-minibuffer)
   (define-key steets/toggle-map "r" 'dired-toggle-read-only)
   (define-key steets/toggle-map "s" 'flyspell-mode)
   (define-key steets/toggle-map "S" 'hs-show-all)
@@ -565,7 +601,7 @@ Toggle modes, inspired by [[http://endlessparentheses.com/the-toggle-map-and-wiz
   (define-key steets/toggle-map "w" 'whitespace-mode)
 #+END_SRC
 
-**** Launch
+*** Launch
 
 Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap-for-standalone-features.html][endless]].
 
@@ -585,41 +621,6 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
   (define-key steets/launcher-map "t" 'ansi-term)
 #+END_SRC
 
-**** Org-mode
-
-#+BEGIN_SRC emacs-lisp
-  (define-prefix-command 'steets/org-map)
-  (define-key mode-specific-map "o" 'steets/org-map)
-
-  (define-key steets/org-map "c" 'steets/org-show-just-me) ;; center
-  (define-key steets/org-map "d" 'deft)
-  (define-key steets/org-map "e" 'org-entities-help)
-  (define-key steets/org-map "f" (lambda ()
-                                   (interactive)
-                                   (steets/find-file org-directory)))
-  (define-key steets/org-map "j" 'org-clock-goto)
-  (define-key steets/org-map "l" 'org-insert-link)
-  (define-key steets/org-map "n" (lambda ()
-                                   (interactive)
-                                   (find-file (steets/org-path "notes.org"))))
-#+END_SRC
-
-**** Zettelkasten
-
-#+BEGIN_SRC emacs-lisp
-  (define-prefix-command 'steets/zettel-map)
-  (define-key mode-specific-map "z" 'steets/zettel-map)
-
-  (define-key steets/zettel-map "/" 'deft)
-  (define-key steets/zettel-map "b" 'org-roam-switch-to-buffer)
-  (define-key steets/zettel-map "c" 'org-roam-capture)
-  (define-key steets/zettel-map "d" 'org-roam-find-directory)
-  (define-key steets/zettel-map "f" 'org-roam-find-file)
-  (define-key steets/zettel-map "h" 'org-roam-find-index)
-  (define-key steets/zettel-map "i" 'org-roam-insert)
-  (define-key steets/zettel-map "t" 'org-roam-buffer-toggle-display)
-#+END_SRC
-
 *** Others
 
 #+BEGIN_SRC emacs-lisp
@@ -634,7 +635,7 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
   (define-key mode-specific-map "j" (lambda () (interactive) (join-line -1)))
   (define-key mode-specific-map "m" 'steets/switch-to-minibuffer)
   (define-key mode-specific-map "s" 'sort-lines)
-  (define-key mode-specific-map "S" 'window-swap-states)
+  (define-key mode-specific-map "S" 'window-swap-states) ;
   (define-key mode-specific-map "u"  ;; dos2unix
     (lambda() (interactive)
       (revert-buffer-with-coding-system 'unix t)
@@ -647,12 +648,21 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
 
 ** Overrides
 
+For consistency with other applications:
+
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-<tab>") 'next-buffer)
-  (global-set-key (kbd "C-S-<iso-lefttab>") 'previous-buffer)
+  (global-set-key (kbd "C-<tab>") 'next-buffer)                ; default C-x <right>
+  (global-set-key (kbd "C-S-<iso-lefttab>") 'previous-buffer)  ; default C-x <left>
   (global-set-key (kbd "C-+") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "C-/") 'comment-line)
+  (global-set-key (kbd "C-/") 'comment-line)                   ; defaul C-x C-;
+  (global-set-key (kbd "C-z") 'undo)                           ; default suspend-frame
+#+END_SRC
+
+Override default behavior with improved versions:
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-/") 'hippie-expand)
   (global-set-key (kbd "M-<up>")  ; move line up
                   (lambda () (interactive)
                     (transpose-lines 1) (forward-line -2) (indent-according-to-mode)))
@@ -661,9 +671,8 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
                     (forward-line 1) (transpose-lines 1) (forward-line -1)
                     (indent-according-to-mode)))
 
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
-  (global-set-key (kbd "C-z") 'undo) ; Emacs default is bound to hide Emacs.
+  (global-set-key (kbd "C-x C-b") 'ibuffer)                    ; default list-buffers
+  (global-set-key (kbd "C-x k") 'kill-this-buffer)             ; default kill-buffer
 #+END_SRC
 
 * Hooks
@@ -685,17 +694,15 @@ General hooks that are not related to packages:
 #+BEGIN_SRC emacs-lisp
   (display-time)
 
-  (setq system-time-locale "C")
-
   (set-language-environment "UTF-8")
 
   (fset 'yes-or-no-p 'y-or-n-p)
 
   (put 'narrow-to-region 'disabled nil)
 
-  (put 'dired-find-alternate-file 'disabled nil)
+  (require 'iso-transl) ; needed since upgrade to Ubuntu 21.04
 
-  (require 'iso-transl) ;; needed since upgrade to Ubuntu 21.04
+  (setq gc-cons-threshold 100000000) ; Make things faster, particularly in lsp-mode.
 
   ;; start in notes
   (find-file (steets/org-path "notes.org"))
@@ -705,17 +712,52 @@ General hooks that are not related to packages:
 
 Space to try out new stuff.
 
-* Wishlist
+Tip: insert new code block with =C-c C-,=
+
+** Writeroom
+
+Distraction-free [[https://github.com/joostkremers/writeroom-mode][writing environment]] (alternative: [[https://github.com/rnkn/olivetti][olivetti]]):
+
+#+begin_src emacs-lisp
+  (use-package writeroom-mode)
+#+end_src
+
+** Helpful
+
+Improve Emacs' already impressive [[https://github.com/Wilfred/helpful][help]]-system:
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :bind
+    (("C-h f" . helpful-callable)
+     ("C-h v" . helpful-variable)
+     ("C-h k" . helpful-key)
+     ("C-c C-d" . helpful-at-point)
+     ("C-h F" . helpful-function)
+     ("C-h C" . helpful-command)))
+#+end_src
+
+#+RESULTS:
+: helpful-command
+
+** Wishlist
 
 [[https://github.com/emacs-tw/awesome-emacs][Stuff to try]]:
 
 - https://github.com/jwiegley/emacs-async
+- https://github.com/Malabarba/elisp-bug-hunter
 - https://github.com/magnars/multiple-cursors.el
 - https://github.com/realgud
 - https://gitlab.com/jabranham/system-packages provides basic access to system package manager, but no gui
 - https://github.com/pashky/restclient.el
+- https://github.com/zweifisch/enlive
+- https://github.com/noctuid/general.el
+- http://wyrick.org/source/elisp/dot-mode/
+- https://github.com/adamrt/sane-term or https://www.emacswiki.org/emacs/MultiTerm
+- https://www.emacswiki.org/emacs/Icicles
+- https://www.emacswiki.org/emacs/BookmarkPlus
 
-* Graveyard
+** Graveyard
 :PROPERTIES:
 :header-args: :tangle no
 :END:
@@ -723,13 +765,13 @@ Space to try out new stuff.
 Rejected configuration (will not be [[https://orgmode.org/manual/Extracting-Source-Code.html][tangled]]):
 
 - Could not get to work:
-  - [[https://github.com/dgutov/diff-hl][diff-hl]] (Git-gutter does work).
   - https://github.com/sheijk/hideshowvis
   - [[https://github.com/tarsius/keycast][keycast]] does not [[https://github.com/seagle0128/doom-modeline/issues/122][work]] well with doom-modeline
 - minibuffer completion
   - https://github.com/minad/vertico
   - https://github.com/raxod502/selectrum#selectrum-in-comparison-to-other-completion-systems
 - https://github.com/atykhonov/google-translate
+
 
 #+BEGIN_SRC emacs-lisp
   ;; The Uncompromising Python Code Formatter
@@ -753,3 +795,89 @@ Rejected configuration (will not be [[https://orgmode.org/manual/Extracting-Sour
                :branch "master"
                :files ("apt-utils.el")))
 #+END_SRC
+
+*** Email
+
+[[https://wanderlust.github.io/wl-docs/wl.html][Wanderlust]]
+https://archive.casouri.cat/note/2018/wanderlust/index.html
+https://enzuru.medium.com/emacs-26-wanderlust-and-modern-gmail-authentication-36e1ae61471f
+http://juanjose.garciaripoll.com/blog/emacs-wanderlust-email/index.html
+
+#+begin_src emacs-lisp
+  (use-package wl
+    ;; The name of the package in MELPA is "wanderlust" but the
+    ;; feature provided by that package is 'wl
+    :straight `(wanderlust)
+    :ensure wanderlust
+    :init
+    (setq
+     elmo-imap4-default-authenticate-type 'clear
+     elmo-imap4-default-port '993
+     elmo-imap4-default-server "imap.gmail.com"
+     elmo-imap4-default-stream-type 'ssl
+     elmo-imap4-default-user "rsmetix@gmail.com"
+     elmo-imap4-use-modified-utf7 t  ; For non ascii-characters in folder-names
+
+     ;; SMTP
+     wl-smtp-authenticate-type "plain"
+     wl-smtp-connection-type 'starttls
+     wl-smtp-posting-port 587
+     wl-smtp-posting-server "smtp.gmail.com"
+     wl-smtp-posting-user "rsmetix"
+
+     wl-default-folder "%inbox"
+     wl-default-spec "%"
+     wl-draft-folder "%[Gmail]/Drafts"
+     wl-fcc-force-as-read t  ; Mark sent messages as read
+     wl-local-domain "gmail.com"
+     wl-message-id-domain "smtp.gmail.com"
+     wl-message-ignored-field-list '("^.*")
+     wl-message-visible-field-list '("^From:" "^To:" "^Cc:" "^Date:" "^Subject:")
+     wl-quicksearch-folder "%[Gmail]/All Mail:rsmetix@imap.gmail.com"
+     wl-trash-folder "%[Gmail]/Trash"
+     wl-from "René Steetskamp <steets@otech.nl>"
+     wl-folder-check-async t
+
+     wl-message-sort-field-list wl-message-visible-field-list
+     wl-summary-width 120 ;; No width
+     wl-summary-default-sort-spec 'date
+     wl-message-window-size '(1 . 2)
+
+     ;; Always download emails without confirmation
+     wl-prefetch-threshold nil
+     wl-message-buffer-prefetch-threshold nil
+     elmo-message-fetch-threshold nil
+
+     ;; Rendering of messages using 'shr', Emacs' simple html
+     ;; renderer, but without fancy coloring that distorts the
+     ;; looks
+     mime-view-text/html-previewer 'shr
+     shr-use-colors nil
+
+     wl-draft-config-alist
+     '(((string-match "1" "1")
+        (bottom . "\n--\n") (bottom-file . "~/.signature"))
+       )
+
+     ;; don't ****ing split large messages
+     mime-edit-split-message nil
+     )
+
+    (autoload 'wl-user-agent-compose "wl-draft" nil t)
+    (if (boundp 'mail-user-agent)
+        (setq mail-user-agent 'wl-user-agent))
+    (if (fboundp 'define-mail-user-agent)
+        (define-mail-user-agent
+          'wl-user-agent
+          'wl-user-agent-compose
+          'wl-draft-send
+          'wl-draft-kill
+          'mail-send-hook))
+    )
+#+end_src
+
+[[https://github.com/emacsmirror/git-timemachine][Git timemachine]] allows you to browse the history of a file:
+
+#+begin_src emacs-lisp
+  (use-package git-timemachine)
+#+end_src

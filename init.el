@@ -13,6 +13,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; 'preload' org so straight replaces the built-in package
 (straight-use-package 'org)
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/README.org"))
