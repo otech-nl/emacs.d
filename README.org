@@ -273,7 +273,8 @@ I always have several projects running at the same time. Often, these projects u
   (use-package docker)
 #+END_SRC
 
-Start with =C-c D= (capital).
+Start with =C-c l D= (capital).
+
 See also the [[Language modes]] below.
 
 *** Language modes
@@ -617,6 +618,7 @@ Launch applications, inspired by [[http://endlessparentheses.com/launcher-keymap
   (define-key steets/launcher-map "h" 'man)
   (define-key steets/launcher-map "l" 'package-list-packages)
   (define-key steets/launcher-map "m" 'compile)
+  (define-key steets/launcher-map "p" 'steets/password)
   (define-key steets/launcher-map "s" 'flyspell-buffer)
   (define-key steets/launcher-map "t" 'ansi-term)
 #+END_SRC
@@ -708,11 +710,45 @@ General hooks that are not related to packages:
   (find-file (steets/org-path "notes.org"))
 #+END_SRC
 
-* Sandbox
+* Playground
 
 Space to try out new stuff.
 
 Tip: insert new code block with =C-c C-,=
+
+** Password generator
+
+A replica of https://otech.nl/pwd/:
+
+#+begin_src emacs-lisp
+      (defun steets/decode-hex-string (hex-string)
+        "Convert HEX string to ASCII string
+      as per https://stackoverflow.com/questions/12003231/how-do-i-convert-a-string-of-hex-into-ascii-using-elisp"
+        (let ((res nil))
+          (dotimes (i (/ (length hex-string) 2) (apply #'concat (reverse res)))
+            (let ((hex-byte (substring hex-string (* 2 i) (* 2 (+ i 1)))))
+              (push (format "%c" (string-to-number hex-byte 16)) res)))))
+
+      (defun steets/b64_md5 (s)
+        "Returns an base64 encoude MD5 hash of s (Replica of http://pajhome.org.uk/crypt/md5/)"
+        (base64-encode-string
+         (steets/decode-hex-string (secure-hash 'md5 (downcase s)))))
+
+      (defun steets/b64_md5_slice (s len)
+          (substring (steets/b64_md5 s) 0 len))
+
+      (defun steets/password ()
+        "Get hash for user values (replica of https://otech.nl/pwd/) and put in kill ring"
+        (interactive)
+        (let ((all "") (val "dymmy"))
+          (while (not (string= val ""))
+            (setq val (read-passwd "Value (RET to end): " nil ""))
+            (setq all (concat all val)))
+          (kill-new (steets/b64_md5_slice all 16))
+          (message "Result is in kill-ring")))
+#+end_src
+
+
 
 ** Writeroom
 
@@ -740,7 +776,22 @@ Improve Emacs' already impressive [[https://github.com/Wilfred/helpful][help]]-s
 #+RESULTS:
 : helpful-command
 
+
 ** Wishlist
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+
+Packages to be started manually.
+
+[[https://github.com/realgud/realgud][Debugging]]
+
+#+begin_src emacs-lisp
+  (use-package realgud
+    :commands (realgud:gdb
+               realgud:pdb))
+#+end_src
+
 
 [[https://github.com/emacs-tw/awesome-emacs][Stuff to try]]:
 
